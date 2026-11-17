@@ -46,7 +46,7 @@ use Joomla\CMS\Language\Text;
 				<div class="span5">
 					<div class="well well-small">
 						<div class="center">
-							<img src="components/com_kunena/media/icons/meela_logo.svg" width="240" height="80" alt="Meela"/>
+							<img class="kunena-logo kunena-logo--light" src="components/com_kunena/media/logo/meela-logo-light.svg" width="269" height="80" alt="Meela"/><img class="kunena-logo kunena-logo--dark" src="components/com_kunena/media/logo/meela-logo-dark.svg" width="269" height="80" alt="Meela"/>
 						</div>
 						<?php // Values wrapping on several lines stay aligned next to their label?>
 						<style>.kunena-about dd { overflow: hidden; }</style>

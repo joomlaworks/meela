@@ -51,6 +51,19 @@
 /* Tab bars wrap onto a second row instead of hiding tabs behind a horizontal scroll (the configuration has ten) */
 #kunena .nav-tabs {flex-wrap:wrap;overflow-x:visible;}
 
+/* Meela's logo for the administrator's light or dark scheme (Joomla 3.x UTD's Prothero: data-scheme dark, or auto) */
+.kunena-logo--dark {display:none;}
+
+:root[data-scheme="dark"] .kunena-logo--light {display:none;}
+
+:root[data-scheme="dark"] .kunena-logo--dark {display:inline;}
+
+@media (prefers-color-scheme: dark) {
+    :root[data-scheme="auto"] .kunena-logo--light {display:none;}
+
+    :root[data-scheme="auto"] .kunena-logo--dark {display:inline;}
+}
+
 /* Dashboard: both blocks as tall as the taller one, the shortcuts spread over their block */
 #kunena .kunena-dashboard {display:flex;flex-wrap:wrap;}
 

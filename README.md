@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/meela-logo-dark.svg">
+    <img src="docs/images/meela-logo-light.svg" width="269" height="80" alt="Meela">
+  </picture>
+</p>
+
 Meela 5.5 for Joomla 3.x & Joomla 3.x UTD
 =========================================
 
