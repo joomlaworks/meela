@@ -3,7 +3,7 @@
 All notable changes to Meela (called Kunena Fork up to 5.4), the continuation of Kunena, are documented here. For a short overview see [README.md](README.md); for
 how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md).
 
-## [5.5.0] - 2026-11-17
+## [5.5.0] - 2026-11-18
 
 ### Changed
 
@@ -27,7 +27,8 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
 - Updates come from `https://joomlaworks.github.io/meela/update.xml`; the installer removes the old Kunena Fork update
   site (Joomla would keep querying it next to the new one).
 - The dashboard's information table striped its rows with a fixed white (`#f9f9f9`), unreadable in Joomla 3.x UTD's
-  dark scheme: the stripe is now a faint translucent grey.
+  dark scheme and offset by the lines between the rows: no stripes there any more (the lines divide the rows); other
+  striped lists use a faint translucent grey.
 - **Profiles shown to guests without what spammers come for** (JoomlaWorks Ltd.): spam accounts used to fill their
   profiles and signatures with links for search engines to crawl, which kept sites from opening profiles to guests, and
   without public profiles Google Search Console reports "Missing field url" for every post's `author` and every

@@ -64,6 +64,13 @@
     :root[data-scheme="auto"] .kunena-logo--dark {display:inline;}
 }
 
+/* Dashboard's information table: rows divided by lines, no stripes (the dividers would offset them); values wrapping
+   on several lines stay aligned next to their label */
+#kunena .kunena-about dt,
+#kunena .kunena-about dd {background:none;}
+
+#kunena .kunena-about dd {overflow:hidden;}
+
 /* Dashboard: both blocks as tall as the taller one, the shortcuts spread over their block */
 #kunena .kunena-dashboard {display:flex;flex-wrap:wrap;}
 

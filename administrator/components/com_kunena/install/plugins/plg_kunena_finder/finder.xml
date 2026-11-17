@@ -3,7 +3,7 @@
 <extension version="2.5" type="plugin" group="kunena" method="upgrade">
     <name>plg_kunena_finder</name>
     <version>5.5.0</version>
-    <creationDate>2026-11-17</creationDate>
+    <creationDate>2026-11-18</creationDate>
     <author>JoomlaWorks Ltd.</author>
     <authorUrl>https://www.joomlaworks.net</authorUrl>
     <copyright>(C) 2008 - 2026 Kunena Team, (C) 2026 JoomlaWorks Ltd. All rights reserved.</copyright>

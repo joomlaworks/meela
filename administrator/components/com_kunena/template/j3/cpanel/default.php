@@ -48,8 +48,6 @@ use Joomla\CMS\Language\Text;
 						<div class="center">
 							<img class="kunena-logo kunena-logo--light" src="components/com_kunena/media/logo/meela-logo-light.svg" width="269" height="80" alt="Meela"/><img class="kunena-logo kunena-logo--dark" src="components/com_kunena/media/logo/meela-logo-dark.svg" width="269" height="80" alt="Meela"/>
 						</div>
-						<?php // Values wrapping on several lines stay aligned next to their label?>
-						<style>.kunena-about dd { overflow: hidden; }</style>
 						<dl class="dl-horizontal kunena-about">
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_VERSION') ?>:</dt>

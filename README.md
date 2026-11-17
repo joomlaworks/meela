@@ -12,7 +12,7 @@ Meela is a native forum component for Joomla. Its name comes from the Greek "μ�
 
 ---
 
-- **Version:** 5.5.0 - released November 17th, 2026
+- **Version:** 5.5.0 - released November 18th, 2026
 - **Joomla:** 3.x, from 3.9 to 3.18 - built and tested for [Joomla 3.x UTD](https://j3xutd.joomlaworks.net)
 - **PHP:** 7.1 to 8.5 (7.4 or newer recommended)
 - **Databases:** MySQL 5.5.3+ / MariaDB, PostgreSQL 9.5+, SQLite 3.37+ (Joomla 3.x UTD's SQLite driver)
@@ -22,7 +22,7 @@ Meela is a native forum component for Joomla. Its name comes from the Greek "μ�
 
 ## CONTENTS
 - [Changelog](#changelog)
-  - [Version 5.5.0 - released November 17th, 2026](#version-550---released-november-17th-2026)
+  - [Version 5.5.0 - released November 18th, 2026](#version-550---released-november-18th-2026)
   - [Version 5.4.0 - released November 17th, 2026](#version-540---released-november-17th-2026)
   - [Version 5.3.0 - released November 12th, 2026](#version-530---released-november-12th-2026)
 - [How to Install](#how-to-install)
@@ -39,7 +39,7 @@ Meela is a native forum component for Joomla. Its name comes from the Greek "μ�
 
 A short overview of each release. Every change is described in detail in [CHANGELOG.md](CHANGELOG.md).
 
-## Version 5.5.0 - released November 17th, 2026
+## Version 5.5.0 - released November 18th, 2026
 Summary of changes:
 - **Kunena Fork is now Meela** (from the Greek "μίλα", "speak"): the name users see changes everywhere (the administrator, extension names, messages, e-mails, every language), and new installations call their forum "Forum". Technical names stay as they were (`com_kunena`, the database tables, plugin and module names, `kunena:*` commands), so it's an ordinary update: integrations, template overrides and addresses keep working. Updates now come from `https://joomlaworks.github.io/meela/update.xml`
 - **Public profiles without the spam:** guests (search engines included) see only a member's avatar, name, role, rank, join date, number of posts and posts. Website, social accounts, location, gender, birthdate, "about me" and signatures (also under posts) are shown to logged-in users only, so spam accounts get nothing out of a public profile, with no clean-up needed on existing sites. Links members add are marked `nofollow ugc`

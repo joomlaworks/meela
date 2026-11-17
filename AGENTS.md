@@ -7,7 +7,7 @@ change: [CHANGELOG.md](CHANGELOG.md).
 ## 1. What this is
 
 **Meela** (from the Greek "μίλα", "speak"; called **Kunena Fork** up to 5.4): a maintained continuation of **Kunena 5.2.14** (forum component for Joomla), first released as **5.3.0** (2026-11-12); current
-release **5.5.0** (2026-11-17).
+release **5.5.0** (2026-11-18).
 
 | Target | Supported |
 |---|---|
@@ -109,7 +109,7 @@ the Installer.
    `administrator/components/com_kunena/install/plugins/*/*.xml`, the templates' `config/*.xml`,
    `media/kunena/labels/labels.xml`, `media/kunena/topic_icons/default/*.xml`, and the three strings in
    `KunenaForum::buildVersion()` / `isDev()` (`libraries/kunena/forum/forum.php`). A quick way:
-   `grep -rl "5\.5\.0\|2026-11-17" --include=*.xml --include=*.php .`
+   `grep -rl "5\.5\.0\|2026-11-18" --include=*.xml --include=*.php .`
 2. Add a `<version>` entry at the end of `install/kunena.install.upgrade.xml` (with any upgrade queries/PHP files).
 3. Set the new version in `docs/update.xml` and `docs/collection.xml` (Joomla's updater compares it with the installed
    one) and point `downloadurl` to the release tag's snapshot,
