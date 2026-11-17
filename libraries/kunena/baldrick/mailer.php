@@ -146,7 +146,7 @@ abstract class KunenaBaldrickMailer
 
         // Development: no e-mails (the activity log says so)
         if (KunenaEmail::isDisabled()) {
-            static::$errors[] = 'sending e-mails is turned off in Kunena > Configuration > Development';
+            static::$errors[] = 'sending e-mails is turned off in Meela > Configuration > Development';
 
             return 0;
         }

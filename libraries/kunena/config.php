@@ -35,7 +35,7 @@ class KunenaConfig extends CMSObject
      * @var    string  Board Title; input, text
      * @since  1.0.0
      */
-    public $board_title = 'Kunena';
+    public $board_title = 'Forum';
 
     /**
      * @var    string  Email; input, email

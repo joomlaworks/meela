@@ -96,7 +96,7 @@ abstract class KunenaDatabaseUtf8mb4
     public static function convert($table)
     {
         if (!isset(static::pending()[$table])) {
-            throw new RuntimeException(sprintf('%s is not a Kunena table waiting for conversion.', $table));
+            throw new RuntimeException(sprintf('%s is not a Meela table waiting for conversion.', $table));
         }
 
         $db = Factory::getDbo();

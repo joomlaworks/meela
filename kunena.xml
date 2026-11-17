@@ -14,10 +14,9 @@
     <version>5.5.0</version>
     <versionname>Tharsis</versionname>
     <creationDate>2026-11-17</creationDate>
-    <author>Kunena Team</author>
-    <authorEmail>kunena@kunena.org</authorEmail>
-    <authorUrl>https://www.kunena.org</authorUrl>
-    <copyright>(C) 2008 - 2026 Kunena Team. All rights reserved.</copyright>
+    <author>JoomlaWorks Ltd.</author>
+    <authorUrl>https://www.joomlaworks.net</authorUrl>
+    <copyright>(C) 2008 - 2026 Kunena Team, (C) 2026 JoomlaWorks Ltd. All rights reserved.</copyright>
     <license>GNU/GPLv3 or later</license>
     <description>COM_KUNENA_XML_DESCRIPTION</description>
 
@@ -53,7 +52,7 @@
     </media>
 
     <administration>
-        <menu view="cpanel" img="components/com_kunena/media/icons/favicons/kunena-logo-white.png">COM_KUNENA</menu>
+        <menu view="cpanel" img="class:comments-2">COM_KUNENA</menu>
         <submenu>
             <menu view="cpanel">COM_KUNENA_DASHBOARD</menu>
             <menu view="categories">COM_KUNENA_CATEGORY_MANAGER</menu>
@@ -86,6 +85,6 @@
         </files>
     </administration>
     <updateservers>
-        <server type="extension" priority="1" name="Kunena Fork">https://joomlaworks.github.io/kunena-fork/update.xml</server>
+        <server type="extension" priority="1" name="Meela">https://joomlaworks.github.io/meela/update.xml</server>
     </updateservers>
 </extension>

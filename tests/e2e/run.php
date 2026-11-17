@@ -1094,13 +1094,13 @@ return json_encode(array("banned" => $q("SELECT COUNT(*) FROM #__users WHERE id=
                 result('purge', $ok, $note . " | url={$admin->lastUrl} | kunena extensions left: $left");
                 break;
             case 'uninstall':
-                $admin->get('administrator/index.php?option=com_installer&view=manage&filter[search]=kunena');
+                $admin->get('administrator/index.php?option=com_installer&view=manage&filter[search]=meela');
                 $html = $admin->last;
                 preg_match_all('#name="cid\[\]" value="(\d+)"#', $html, $m);
                 $id = null;
                 $rows = preg_split('#<tr#', $html);
                 foreach ($rows as $r) {
-                    if (preg_match('#cid\[\]" value="(\d+)"#', $r, $mm) && preg_match('#>\s*Kunena Forum\s*<|com_kunena#i', $r)) {
+                    if (preg_match('#cid\[\]" value="(\d+)"#', $r, $mm) && preg_match('#>\s*(?:Meela|Kunena Forum)\s*<|com_kunena#i', $r)) {
                         $id = $mm[1];
                     }
                 }

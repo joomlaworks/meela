@@ -196,7 +196,7 @@ class plgSystemKunena extends \Joomla\CMS\Plugin\CMSPlugin
         // Old version detected: emulate failed installation
         $app = Factory::getApplication();
         $app->enqueueMessage(sprintf(
-            'Sorry, it is not possible to downgrade Kunena %s to version %s.',
+            'Sorry, it is not possible to downgrade Meela %s to version %s.',
             KunenaForum::version(),
             $manifest->version
         ), 'warning');
@@ -246,7 +246,7 @@ class plgSystemKunena extends \Joomla\CMS\Plugin\CMSPlugin
     public function onPrivacyCollectAdminCapabilities()
     {
         $capabilities = array(
-            'Kunena' => array(
+            'Meela' => array(
                 Text::_('PLG_SYSTEM_KUNENA_PRIVACY_CAPABILITY_EMAIL'),
                 Text::_('PLG_SYSTEM_KUNENA_PRIVACY_CAPABILITY_IP_ADDRESS'),
                 Text::_('PLG_SYSTEM_KUNENA_PRIVACY_CAPABILITY_USERPROFILE'),

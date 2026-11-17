@@ -39,7 +39,7 @@ if (!file_exists(JPATH_CONFIGURATION . '/configuration.php')
 
 // Kunena check.
 if (!file_exists(JPATH_ADMINISTRATOR . '/components/com_kunena/api.php')) {
-    echo 'Kunena Forum not installed. Exiting...';
+    echo 'Meela is not installed. Exiting...';
 
     exit;
 }

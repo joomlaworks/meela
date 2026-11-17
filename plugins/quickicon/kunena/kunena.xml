@@ -4,10 +4,10 @@
     <name>plg_quickicon_kunena</name>
     <version>5.5.0</version>
     <creationDate>2026-11-17</creationDate>
-    <author>Kunena Team</author>
+    <author>JoomlaWorks Ltd.</author>
     <authorEmail>Kunena@kunena.org</authorEmail>
-    <authorUrl>https://www.kunena.org</authorUrl>
-    <copyright>www.kunena.org</copyright>
+    <authorUrl>https://www.joomlaworks.net</authorUrl>
+    <copyright>(C) 2008 - 2026 Kunena Team, (C) 2026 JoomlaWorks Ltd. All rights reserved.</copyright>
     <license>GNU/GPLv3 or later</license>
     <description>PLG_QUICKICON_KUNENA_DESC</description>
     <files>

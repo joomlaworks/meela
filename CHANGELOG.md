@@ -1,12 +1,30 @@
 # Changelog
 
-All notable changes to Kunena Fork, this fork of Kunena, are documented here. For a short overview see [README.md](README.md); for
+All notable changes to Meela (called Kunena Fork up to 5.4), the continuation of Kunena, are documented here. For a short overview see [README.md](README.md); for
 how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md).
 
 ## [5.5.0] - 2026-11-17
 
 ### Changed
 
+- **Kunena Fork is now Meela** (from the Greek "μίλα", "speak"; repository github.com/joomlaworks/meela). Only the name
+  users see changes:
+  - language strings in every language: "Kunena" becomes "Meela" where it names the product. Kept: the original
+    project's credits, Kunena 5.2 upgrades, legacy URLs, kunena.org and Transifex links, file paths and identifiers;
+  - extension names ("Meela", "System - Meela", "Meela - Baldrick AI", "Meela Latest"...), authors (JoomlaWorks Ltd.)
+    and copyright lines (Kunena Team and JoomlaWorks Ltd.) in the manifests;
+  - the administrator: page titles, the dashboard's wordmark (a placeholder until the logo is ready:
+    `administrator/components/com_kunena/media/icons/meela_logo.svg`), "Based on Kunena 5.2.14 by the Kunena Team"
+    under the version, a speech-bubble icon in the Components menu, the Changelog link, the version footer, the system
+    report's extension names, the Privacy dashboard's capability heading;
+  - messages of the installer, the command line, Baldrick AI and the CAPTCHA log; the welcome post and author name of a
+    new installation;
+  - new installations call the forum "Forum" (`board_title`, was "Kunena"); existing sites keep their title.
+  Every technical identifier stays (`com_kunena`, tables, classes, `COM_KUNENA_*` keys, plugin and module names and
+  folders, `kunena:*` commands), so 5.5.0 is an ordinary update: integrations, template overrides, menu items and
+  addresses keep working.
+- Updates come from `https://joomlaworks.github.io/meela/update.xml`; the installer removes the old Kunena Fork update
+  site (Joomla would keep querying it next to the new one).
 - **Profiles shown to guests without what spammers come for** (JoomlaWorks Ltd.): spam accounts used to fill their
   profiles and signatures with links for search engines to crawl, which kept sites from opening profiles to guests, and
   without public profiles Google Search Console reports "Missing field url" for every post's `author` and every

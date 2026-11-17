@@ -324,8 +324,8 @@ class KunenaAdminModelTools extends KunenaAdminModelCpanel
 
         // Check if Mootools plugins and others kunena plugins are enabled, and get the version of this modules
         $plg['jfirephp']           = $this->getExtensionVersion('system/jfirephp', 'System - JFirePHP');
-        $plg['ksearch']            = $this->getExtensionVersion('search/kunena', 'Search - Kunena Search');
-        $plg['kdiscuss']           = $this->getExtensionVersion('content/kunenadiscuss', 'Content - Kunena Discuss');
+        $plg['ksearch']            = $this->getExtensionVersion('search/kunena', 'Search - Meela');
+        $plg['kdiscuss']           = $this->getExtensionVersion('content/kunenadiscuss', 'Content - Meela Discuss');
         $plg['jxfinderkunena']     = $this->getExtensionVersion('finder/plg_jxfinder_kunena', 'Finder - Kunena Posts');
         $plg['kjomsocialmenu']     = $this->getExtensionVersion('community/kunenamenu', 'JomSocial - My Kunena Forum Menu');
         $plg['kjomsocialmykunena'] = $this->getExtensionVersion('community/mykunena', 'JomSocial - My Kunena Forum Posts');
@@ -344,10 +344,10 @@ class KunenaAdminModelTools extends KunenaAdminModelCpanel
         }
 
         $mod                 = array();
-        $mod['kunenalatest'] = $this->getExtensionVersion('mod_kunenalatest', 'Kunena Latest');
-        $mod['kunenastats']  = $this->getExtensionVersion('mod_kunenastats', 'Kunena Stats');
-        $mod['kunenalogin']  = $this->getExtensionVersion('mod_kunenalogin', 'Kunena Login');
-        $mod['kunenasearch'] = $this->getExtensionVersion('mod_kunenasearch', 'Kunena Search');
+        $mod['kunenalatest'] = $this->getExtensionVersion('mod_kunenalatest', 'Meela Latest');
+        $mod['kunenastats']  = $this->getExtensionVersion('mod_kunenastats', 'Meela Statistics');
+        $mod['kunenalogin']  = $this->getExtensionVersion('mod_kunenalogin', 'Meela Login');
+        $mod['kunenasearch'] = $this->getExtensionVersion('mod_kunenasearch', 'Meela Search');
 
         foreach ($mod as $id => $item) {
             if (empty($item)) {

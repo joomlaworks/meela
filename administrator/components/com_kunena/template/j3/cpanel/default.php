@@ -46,21 +46,20 @@ use Joomla\CMS\Language\Text;
 				<div class="span5">
 					<div class="well well-small">
 						<div class="center">
-							<img src="components/com_kunena/media/icons/kunena_logo.png"/>
+							<img src="components/com_kunena/media/icons/meela_logo.svg" width="240" height="80" alt="Meela"/>
 						</div>
 						<?php // Values wrapping on several lines stay aligned next to their label?>
 						<style>.kunena-about dd { overflow: hidden; }</style>
 						<dl class="dl-horizontal kunena-about">
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_VERSION') ?>:</dt>
-							<dd><?php echo strtoupper(KunenaForum::version()); ?> (<a href="https://github.com/joomlaworks/kunena-fork/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer"><?php echo Text::_('COM_KUNENA_DASHBOARD_CHANGELOG'); ?></a>)</dd>
+							<dd><?php echo strtoupper(KunenaForum::version()); ?> (<a href="https://github.com/joomlaworks/meela/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer"><?php echo Text::_('COM_KUNENA_DASHBOARD_CHANGELOG'); ?></a>)<br/><small class="muted"><?php echo Text::sprintf('COM_KUNENA_CPANEL_BASED_ON', '<a href="https://www.kunena.org" target="_blank" rel="noopener noreferrer">Kunena</a> 5.2.14'); ?></small></dd>
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_DATE') ?>:</dt>
 							<dd><?php echo KunenaForum::versionDate(); ?></dd>
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_AUTHOR') ?>:</dt>
-							<dd><a href="https://www.kunena.org/team" target="_blank" rel="noopener noreferrer">Kunena Team</a>,
-								<a href="https://www.joomlaworks.net" target="_blank" rel="noopener noreferrer">JoomlaWorks Ltd.</a> &amp; Contributors</dd>
+							<dd><a href="https://www.joomlaworks.net" target="_blank" rel="noopener noreferrer">JoomlaWorks Ltd.</a> &amp; Contributors</dd>
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_COPYRIGHT') ?>:</dt>
 							<dd>&copy; 2008 - 2026 Kunena Team<br/>&copy; 2026 JoomlaWorks Ltd. &amp; Contributors</dd>

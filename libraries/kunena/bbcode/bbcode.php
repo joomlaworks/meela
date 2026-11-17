@@ -339,7 +339,7 @@ class KunenaBbcode extends Nbbc\BBCode
                         'follow_location' => 0,
                         'max_redirects'   => 0,
                         'ignore_errors'   => false,
-                        'user_agent'      => 'Mozilla/5.0 (compatible; Kunena)',
+                        'user_agent'      => 'Mozilla/5.0 (compatible; Meela)',
                     ),
                 )
             );

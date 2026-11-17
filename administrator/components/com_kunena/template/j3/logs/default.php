@@ -322,7 +322,7 @@ if ($this->pagination->total > 0)
 										<?php else: ?>
 											<span class="icon-edit" aria-hidden="true"></span>
 										<?php endif ;?>
-										Kunena <?php echo !$this->group || isset($this->group['type']) ? $this->escape($this->getType($item->type)) : ''; ?>
+										Meela <?php echo !$this->group || isset($this->group['type']) ? $this->escape($this->getType($item->type)) : ''; ?>
 
 										ID:<?php echo $item->id; ?>
 									</h3>

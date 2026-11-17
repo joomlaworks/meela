@@ -6,7 +6,7 @@ change: [CHANGELOG.md](CHANGELOG.md).
 
 ## 1. What this is
 
-**Kunena Fork**: a maintained fork of **Kunena 5.2.14** (forum component for Joomla), first released as **5.3.0** (2026-11-12); current
+**Meela** (from the Greek "μίλα", "speak"; called **Kunena Fork** up to 5.4): a maintained continuation of **Kunena 5.2.14** (forum component for Joomla), first released as **5.3.0** (2026-11-12); current
 release **5.5.0** (2026-11-17).
 
 | Target | Supported |
@@ -16,8 +16,12 @@ release **5.5.0** (2026-11-17).
 | Databases | MySQL 5.5.3+ / MariaDB, PostgreSQL 9.5+ (drivers `postgresql`, `pgsql`), SQLite 3.37+ (UTD driver `mysqlonsqlite`). **Not** SQL Server / Azure SQL. |
 | Coding standard | PSR-12 via PHP CS Fixer (`.php-cs-fixer.dist.php`) |
 
-The fork will be renamed later: don't add new "Kunena" branding to frontend output (credits were removed on purpose,
-see section 6).
+**Naming:** users see "Meela" (extension names, language strings, administrator titles and logo, messages, docs);
+every technical identifier keeps "kunena" (`com_kunena`, `#__kunena_*` tables, `Kunena*` classes, `COM_KUNENA_*` keys,
+the `kunena` plugin group and `onKunena*` events, `mod_kunena*`, `media/kunena`, `kunena:*` commands), so that updates,
+third-party integrations, template overrides and URLs keep working. New text says "Meela"; "Kunena" only where the
+original project is meant (Kunena 5.2 upgrades, the Kunena Team's credits and copyright, legacy URLs). No "Powered by"
+or credits in frontend output (section 6).
 
 ## 2. Repository layout
 
@@ -47,7 +51,7 @@ plugins/search/kunena/                  Search - Kunena (com_search plugin, func
 plugins/kunena/baldrick/                Kunena - Baldrick AI (AI first responder: events, settings form; own manifest)
 modules/mod_kunena{latest,login,search,stats}/  site modules (own manifests)
 docs/                                   Joomla update server files (update.xml, collection.xml), published with GitHub Pages
-                                        at https://joomlaworks.github.io/kunena-fork/ (not part of the package; export-ignored)
+                                        at https://joomlaworks.github.io/meela/ (not part of the package; export-ignored)
 tests/                                  test tooling (not part of the package; export-ignored)
 AGENTS.md README.md CHANGELOG.md CLI-GUIDE.md LICENSE.txt .php-cs-fixer.dist.php .gitattributes .gitignore
 JS-MIGRATION.md                         plan for rewriting Kunena's JavaScript without jQuery (inventory, order, rules)
@@ -88,7 +92,7 @@ JS-MIGRATION.md                         plan for rewriting Kunena's JavaScript w
    - utf8mb4 index conversion (MySQL only), cache clean-up;
    - in the administrator only, sets the installer's `redirect_url` to `index.php?option=com_kunena&view=install`.
 4. `uninstall()`: `KunenaModelInstall::uninstall()` removes the library, plugins, modules and menu items (tables are kept;
-   Kunena > Tools > Uninstall drops them).
+   Meela > Tools > Uninstall drops them).
 
 ### 3.2 Kunena's install wizard (`administrator/components/com_kunena/install/`)
 
@@ -109,11 +113,11 @@ the Installer.
 2. Add a `<version>` entry at the end of `install/kunena.install.upgrade.xml` (with any upgrade queries/PHP files).
 3. Set the new version in `docs/update.xml` and `docs/collection.xml` (Joomla's updater compares it with the installed
    one) and point `downloadurl` to the release tag's snapshot,
-   `https://github.com/joomlaworks/kunena-fork/archive/refs/tags/v<version>.zip` (GitHub's ZIP of the tag, which
+   `https://github.com/joomlaworks/meela/archive/refs/tags/v<version>.zip` (GitHub's ZIP of the tag, which
    installs as-is). Commit, tag the commit `v<version>` and push the tag together with `main`: GitHub Pages publishes
    `docs/` from `main`, so the update server must never announce a tag that isn't pushed yet. `targetplatform` stays
    `3\.(9|[1-9][0-9])\.`: Joomla 3.9 and every later 3.x (Joomla 3.x UTD) release; the manifest's `<updateservers>`
-   points to `https://joomlaworks.github.io/kunena-fork/update.xml`.
+   points to `https://joomlaworks.github.io/meela/update.xml`.
 4. Update CHANGELOG.md and README.md (before the commit that gets the tag).
 
 ## 4. Rules for code changes
@@ -205,11 +209,11 @@ Joomla). Follow UTD's CLI-GUIDE.md: `kunena:<noun>:<verb>` names, output only th
 shared with the administrator (e.g. `kunena:trash:purge` and Maintenance > Empty Trash both use `KunenaForumTrash`;
 `kunena:sampledata:install|remove` and Tools > Sample Data use `KunenaSampledata`; `kunena:users:normalize` and Maintenance >
 Normalise Usernames & Names use `KunenaUserNormalizer`; `kunena:baldrick:process` and
-Kunena > Baldrick AI > "Process the queue now" use `KunenaBaldrickEngine`). On the command line Kunena's
+Meela > Baldrick AI > "Process the queue now" use `KunenaBaldrickEngine`). On the command line Kunena's
 "current user" is not the Super User the command runs as, so library code which checks the current user's rights
 (e.g. `KunenaUser::save()` for other users) refuses: write through the tables where that is intended.
 
-Maintenance jobs live in **Kunena > Maintenance** (`view=maintenance`): one page, one job after the other (name,
+Maintenance jobs live in **Meela > Maintenance** (`view=maintenance`): one page, one job after the other (name,
 description, its own fields, a Run button, the result below it). Each job is a method of
 `KunenaAdminControllerMaintenance` registered in its `$jobs` list, behind one JSON task (`task=run&format=json`, `job`,
 `step=init|run`, form token, `core.admin` on Kunena), answering `success`, `done`, `status`, `message`, `errors` (and
@@ -326,7 +330,7 @@ Rules:
   to it through `onStructuredDataBeforeRender` (System - Kunena plugin -> `KunenaSeo::render()`): Kunena's tags replace
   the generic ones and its nodes join the plugin's `@graph`. Otherwise Kunena writes them itself; JSON-LD always as a
   custom tag of its own (`addCustomTag()`), never `addScriptDeclaration()` (Joomla merges same-type declarations).
-- Settings: Kunena > Configuration > SEO & Feeds (`seo_structured_data`, `seo_social_tags`, `seo_share_image`, `seo_x_site`).
+- Settings: Meela > Configuration > SEO & Feeds (`seo_structured_data`, `seo_social_tags`, `seo_share_image`, `seo_x_site`).
 - XML sitemaps: `kunena:sitemap:generate` only (command line, from cron), all code in the Console - Kunena plugin
   (`PlgConsoleKunenaSitemap`, `plugins/console/kunena/sitemap.php`; Kunena itself is unchanged: it reaches the router's
   and the topic helper's caches through reflection to keep memory flat). Static files in `media/kunena/sitemaps/`
@@ -491,3 +495,6 @@ tests/e2e/containers.sh down
   records Crypsis for sites upgrading from < 5.3 that never saved their configuration; `tests/e2e/upgrade.sh` checks it).
   One stylesheet and one script; no "Time to create page" in the footer of any template.
 - `LICENSE.txt` (GPL v3) stays at the root.
+- The product is called Meela (renamed from Kunena Fork in 5.5.0); the Kunena Team stays credited (copyright lines, the
+  dashboard's "Based on Kunena 5.2.14 by the Kunena Team" under the version). New installations call the forum "Forum"
+  (`board_title`).

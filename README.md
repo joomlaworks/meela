@@ -1,11 +1,7 @@
-Kunena Fork 5.5 for Joomla 3.x & Joomla 3.x UTD
-===============================================
+Meela 5.5 for Joomla 3.x & Joomla 3.x UTD
+=========================================
 
-Kunena Fork is a native forum component for Joomla. This repository is a maintained fork of **Kunena 5.2.14**, the last release of Kunena for Joomla 3.x & [Joomla 3.x UTD](https://j3xutd.joomlaworks.net), modernised for current PHP versions, hardened and packaged as a single installable extension.
-
----
-
-**This is an intermediate project until it's renamed to something else.**
+Meela is a native forum component for Joomla. Its name comes from the Greek "μίλα", "speak". It continues **Kunena 5.2.14**, the last release of Kunena for Joomla 3.x & [Joomla 3.x UTD](https://j3xutd.joomlaworks.net), modernised for current PHP versions, hardened and packaged as a single installable extension. Meela was called "Kunena Fork" up to version 5.4.
 
 ---
 
@@ -38,10 +34,11 @@ A short overview of each release. Every change is described in detail in [CHANGE
 
 ## Version 5.5.0 - released November 17th, 2026
 Summary of changes:
+- **Kunena Fork is now Meela** (from the Greek "μίλα", "speak"): the name users see changes everywhere (the administrator, extension names, messages, e-mails, every language), and new installations call their forum "Forum". Technical names stay as they were (`com_kunena`, the database tables, plugin and module names, `kunena:*` commands), so it's an ordinary update: integrations, template overrides and addresses keep working. Updates now come from `https://joomlaworks.github.io/meela/update.xml`
 - **Public profiles without the spam:** guests (search engines included) see only a member's avatar, name, role, rank, join date, number of posts and posts. Website, social accounts, location, gender, birthdate, "about me" and signatures (also under posts) are shown to logged-in users only, so spam accounts get nothing out of a public profile, with no clean-up needed on existing sites. Links members add are marked `nofollow ugc`
 - Profiles of members without posts are not indexed (`noindex, follow`)
-- **MySQL/MariaDB: emoji in posts and searches.** Forums installed before utf8mb4 kept their Kunena tables in utf8 (Kunena never converted the columns), so emoji couldn't be stored and searching for them failed with "Illegal mix of collations". **Maintenance > Convert Kunena's tables to utf8mb4** (or `kunena:database:utf8mb4` for large forums) converts them
-- **Kunena > Maintenance**: the maintenance tools (recounts, user synchronisation, prune, IP cleanup, RE: prefixes, Empty Trash, usernames) on one page, each job with its own Run button and its result below it, long jobs in steps; Tools keeps Report Configuration, Sample Data, Menu Manager, Diagnostics and Uninstall
+- **MySQL/MariaDB: emoji in posts and searches.** Forums installed before utf8mb4 kept their tables in utf8 (Kunena never converted the columns), so emoji couldn't be stored and searching for them failed with "Illegal mix of collations". **Maintenance > Convert Kunena's tables to utf8mb4** (or `kunena:database:utf8mb4` for large forums) converts them
+- **Meela > Maintenance**: the maintenance tools (recounts, user synchronisation, prune, IP cleanup, RE: prefixes, Empty Trash, usernames) on one page, each job with its own Run button and its result below it, long jobs in steps; Tools keeps Report Configuration, Sample Data, Menu Manager, Diagnostics and Uninstall
 - **Usernames and names with common characters only** (Configuration > Members, on by default): usernames with letters A-Z, digits and dashes, names with letters of any alphabet, digits, spaces and `. , ' - & ( )`, both starting with a letter or a digit; checked on registration and profile changes. **Maintenance > Normalise Usernames & Names** (and `kunena:users:normalize`) fixes existing accounts, e.g. `__carletto75__` becomes `carletto75` and "Daniel Correa ✔" becomes "Daniel Correa"
 - **XML sitemaps:** the profiles of members with posts (`profiles.xml`), when guests may see profiles
 - With "Allow Guests to see User Profiles" on, threads' structured data names each author's profile (`author.url`), which Google Search Console asks for
@@ -53,7 +50,7 @@ Summary of changes:
 ## Version 5.3.0 - released November 12th, 2026
 Summary of changes:
 - **One package** that installs straight from GitHub's ZIP, now including the Kunena modules and plugins that used to be separate downloads
-- **PHP 7.1 to 8.5**, with no deprecation warnings from Kunena Fork's code, and **PostgreSQL and SQLite** in addition to MySQL/MariaDB
+- **PHP 7.1 to 8.5**, with no deprecation warnings from Meela's code, and **PostgreSQL and SQLite** in addition to MySQL/MariaDB
 - **Security:** about 90 vulnerabilities fixed, among them the hole bots used to post spam into any forum category without solving a CAPTCHA, SQL injections, stored XSS in posts and profiles, arbitrary file upload/deletion and account takeover by moderators
 - **CAPTCHA from Joomla's Global Configuration** (reCAPTCHA, hCaptcha, Cloudflare Turnstile, IconCaptcha, Akismet...), refusing posts when a CAPTCHA is required but none is configured
 - **Blackadder**, the new default frontend template: clean and monochrome, no Bootstrap, adapting to the site template's fonts, colours and light/dark scheme
@@ -72,37 +69,37 @@ Every change is described in detail in [CHANGELOG.md](CHANGELOG.md).
   - Moderation queue: moderators see how many posts await approval (account menu) and list them all in one place, across categories, with bulk approve, delete and move
   - Resolved threads: the thread starter and moderators mark a thread as resolved from the reply form, and it shows a "Resolved" label in the thread and the lists (unchecking it in a later reply reopens the thread)
   - Automatic locking: threads without a reply for a number of days are locked (Configuration > Posting > Thread Lifecycle, and per category); moderators can still reply, which opens the thread again
-- **Baldrick AI**, the forum's AI first responder (plugin "Kunena - Baldrick AI"):
+- **Baldrick AI**, the forum's AI first responder (plugin "Meela - Baldrick AI"):
   - Answers new questions, and old questions revived after a while (configurable), that no administrator or moderator has answered, and follows up when the poster replies to it (also configurable)
   - A cheap model sorts each question first; clear questions get an answer from a more capable model, based on related public threads of the forum; broad ones get a canned "have you searched the forum?" reply; spam is unpublished
   - Replies are published at once, in the poster's language with an English translation, signed with the Baldrick account's forum signature
   - E-mail notifications for every reply and spam, or for spam only; errors (a thread Baldrick had to give up on, a provider refusing the key) are always notified
-  - Costs, activity and the queue in Kunena > Baldrick AI; a full-text search index for large forums
+  - Costs, activity and the queue in Meela > Baldrick AI; a full-text search index for large forums
 - **Administrator:**
   - Tools > Empty Trash: permanently deletes every trashed thread and post with their attachments, in batches with a progress bar
   - Tools > Sample Data: a complete fictional forum with categories, users, avatars, about 60 threads and 400 posts, polls, attachments and every post state, to style and test a new site; "Remove" deletes exactly what was installed
   - Configuration > SEO & Feeds: the search engine settings in a tab of their own, with switches for structured data and the sharing tags, a default share image and the site's X account
-  - Configuration > Development (the last tab): Kunena Fork's debug mode, and a switch that stops all of Kunena Fork's e-mails (subscriptions, reports, mentions, Baldrick AI's notifications) on development and test sites, writing each one to Kunena Fork's log instead
+  - Configuration > Development (the last tab): Meela's debug mode, and a switch that stops all of Meela's e-mails (subscriptions, reports, mentions, Baldrick AI's notifications) on development and test sites, writing each one to Meela's log instead
 - **Search engines and social networks:**
   - Google structured data (JSON-LD) for discussions: each thread as a `DiscussionForumPosting` with its author, full text, images, reply and view counts, its category, and the replies shown on the page as `Comment`; replies by Baldrick AI are marked as AI-generated (`digitalSourceType`), as Google recommends
   - Member profiles as a `ProfilePage` (name, avatar, join date, number of posts)
   - Open Graph and X card tags for threads, profiles, categories and the forum's other pages: title, description, the thread's first attached image (or a default share image) and a large image card
   - Only categories guests can read are described, and only what the page shows
-  - On Joomla 3.x UTD, Kunena Fork hands all of this to the core "System - Structured Data & Social Tags" plugin: one graph per page, joined with the site's own (publisher, website, breadcrumbs), and no duplicate tags. On Joomla 3.9/3.10 Kunena Fork writes the tags itself
+  - On Joomla 3.x UTD, Meela hands all of this to the core "System - Structured Data & Social Tags" plugin: one graph per page, joined with the site's own (publisher, website, breadcrumbs), and no duplicate tags. On Joomla 3.9/3.10 Meela writes the tags itself
 - **Command line** (Joomla 3.x UTD, `php cli/joomla.php list kunena`): `kunena:trash:purge`, `kunena:sampledata:install`, `kunena:sampledata:remove`, `kunena:baldrick:process`, `kunena:baldrick:index` and `kunena:baldrick:check` (tells why Baldrick would or wouldn't answer a post), all with `--dry-run`, also offered to AI assistants through Joomla 3.x UTD's MCP server. See [CLI-GUIDE.md](CLI-GUIDE.md)
 - **Databases:** PostgreSQL 9.5+ and SQLite 3.37+ (Joomla 3.x UTD's driver), in addition to MySQL/MariaDB
 
 **Improvements:**
-- Updates through Joomla's updater (System > Update > Extensions), from Kunena Fork's own update server, for Joomla 3.9 and every later Joomla 3.x release
-- One package installs everything: the component, its media, the library, the System, Quick Icon and Console plugins, the Latest, Login, Search and Stats modules, the Kunena Discuss and Search plugins, and Baldrick AI
+- Updates through Joomla's updater (System > Update > Extensions), from Meela's own update server, for Joomla 3.9 and every later Joomla 3.x release
+- One package installs everything: the component, its media, the library, the System, Quick Icon and Console plugins, the Latest, Login, Search and Stats modules, the Meela Discuss and Search plugins, and Baldrick AI
 - Runs cleanly on PHP 7.1 to 8.5
 - CAPTCHA comes from the "Default Captcha" of Joomla's Global Configuration, and fails closed: if a CAPTCHA is required but none is configured, posting is refused instead of silently allowed
 - WebP and AVIF images for avatars and attachments (resized like the others, where the server's PHP supports them), and documents and media (Office/OpenDocument files, MP3, MP4, WebM...) in the default attachment types
-- Kunena's configuration regrouped by task into General, Display, Posting, Members, Notifications, Security & Moderation, SEO & Feeds, Integrations, System and Development tabs, the most-used settings first; Yes/No buttons and Media Manager image pickers where they help; the administrator template's font size
+- The configuration regrouped by task into General, Display, Posting, Members, Notifications, Security & Moderation, SEO & Feeds, Integrations, System and Development tabs, the most-used settings first; Yes/No buttons and Media Manager image pickers where they help; the administrator template's font size
 - Faster banning: the ban form preselects "block the account" and the removal of the spammer's posts, signature, avatar and profile
 - Tools > Recount is fast on large forums: 3 to 4 seconds for 200,000 posts on MariaDB, MySQL and PostgreSQL, where a single batch could take over 20 minutes before
 - Crypsis works with any site template: Bootstrap 2.3's CSS is loaded scoped to the forum, so it no longer looks unstyled on templates not built on Bootstrap 2
-- Kunena's administrator works with Joomla 3.x UTD's Prothero template (no jQuery or MooTools assumed)
+- The administrator works with Joomla 3.x UTD's Prothero template (no jQuery or MooTools assumed)
 - The "Time to create page" line is gone from the frontend footer
 - Code formatted to the PSR-12 coding standard
 
@@ -113,31 +110,31 @@ Every change is described in detail in [CHANGELOG.md](CHANGELOG.md).
 - "Powered by Kunena" credits and the credits page
 - The third-party integration plugins for AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM (removed from existing sites when upgrading); Community Builder's is kept
 - The WysiBB editor and other unused JavaScript
-- The kunena.org update server (it only offers Kunena 5.2.x), replaced by Kunena Fork's own: updates now come through Joomla's updater
+- The kunena.org update server (it only offers Kunena 5.2.x), replaced by Meela's own: updates now come through Joomla's updater
 
 ## HOW TO INSTALL
 
 1. On GitHub, use **Code > Download ZIP** (or download a release archive).
 2. In Joomla's administrator, go to **Extensions > Install > Upload Package File** and upload the ZIP as it is.
-3. You are taken to Kunena Fork's installation wizard, which creates (or upgrades) the forum's database tables.
+3. You are taken to Meela's installation wizard, which creates (or upgrades) the forum's database tables.
 
-One package installs everything: the Kunena Fork component, its media files, the Kunena Fork library, the System - Kunena, Quick Icon - Kunena and Console - Kunena plugins, and the extensions kunena.org used to distribute separately: the Kunena Latest, Login, Search and Stats modules and the Content - Kunena Discuss and Search - Kunena plugins, and the new Kunena - Baldrick AI plugin. New plugins are enabled; plugins you already had keep their state (e.g. a disabled Kunena Discuss stays disabled). Modules are installed but not published - add them to your template's positions in Extensions > Modules.
+One package installs everything: the Meela component, its media files, the Meela library, the System - Meela, Quick Icon - Meela and Console - Meela plugins, and the extensions kunena.org used to distribute separately: the Kunena Latest, Login, Search and Stats modules and the Content - Kunena Discuss and Search - Kunena plugins, and the new Kunena - Baldrick AI plugin. New plugins are enabled; plugins you already had keep their state (e.g. a disabled Kunena Discuss stays disabled). Modules are installed but not published - add them to your template's positions in Extensions > Modules.
 
-The command line works too: `php cli/joomla.php extension:install --path=kunena.zip` (the wizard then runs the first time you open Kunena Fork in the administrator).
+The command line works too: `php cli/joomla.php extension:install --path=kunena.zip` (the wizard then runs the first time you open Meela in the administrator).
 
 ## HOW TO UPGRADE FROM KUNENA 5.2.X
 
-Install the package over your existing Kunena 5.2 site, as above. The old "Kunena Forum Package" and "Kunena Media Files" entries are replaced by the single "Kunena" component; your forum, attachments, avatars and settings are kept. Take a backup first, as for any upgrade. Upgrades are supported on MySQL/MariaDB (Kunena 5.2 only ran on MySQL).
+Install the package over your existing Kunena 5.2 site, as above. The old "Kunena Forum Package" and "Kunena Media Files" entries are replaced by the single "Meela" component; your forum, attachments, avatars and settings are kept. Take a backup first, as for any upgrade. Upgrades are supported on MySQL/MariaDB (Kunena 5.2 only ran on MySQL).
 
 ## CONFIGURING THE CAPTCHA
 
 1. Choose and configure a CAPTCHA plugin in **Extensions > Plugins** (Joomla 3.x UTD ships IconCaptcha ready to use, with no keys).
 2. Select it as **Default Captcha** in **System > Global Configuration > Site**.
-3. In **Kunena > Configuration > Security & Moderation**, choose who must solve it ("Display Captcha for") and, for registered users, below how many posts ("CAPTCHA Challenge for Users"). Moderators are never challenged.
+3. In **Meela > Configuration > Security & Moderation**, choose who must solve it ("Display Captcha for") and, for registered users, below how many posts ("CAPTCHA Challenge for Users"). Moderators are never challenged.
 
 ## CONFIGURING BALDRICK AI
 
-The plugin **Kunena - Baldrick AI** is enabled on installation but does nothing until it has an API key (Kunena Fork's administrator pages remind you). In **Extensions > Plugins > Kunena - Baldrick AI**:
+The plugin **Meela - Baldrick AI** is enabled on installation but does nothing until it has an API key (Meela's administrator pages remind you). In **Extensions > Plugins > Meela - Baldrick AI**:
 
 1. **Step 1 (triage)**: choose the API type, leave the base URL empty for Anthropic's or OpenAI's own API (or enter a compatible endpoint, e.g. for Qwen Cloud use the Anthropic-compatible API endpoint `https://token-plan.maas.qwencloudapi.com/apps/anthropic` or the OpenAI-compatible API endpoint `https://token-plan.maas.qwencloudapi.com/compatible-mode/v1`), enter the API key, then **Fetch models** and pick a small, cheap model (e.g. `claude-haiku-5-5`). **Test** checks the connection.
 2. **Step 2 (answers)**: pick a more capable model (e.g. `claude-sonnet-5-5`), on the same connection or another one.
@@ -146,9 +143,9 @@ The plugin **Kunena - Baldrick AI** is enabled on installation but does nothing 
 
 Baldrick posts as the user selected in its settings, or as a "Baldrick" user it creates (a plain Registered user is all it needs). Its replies are signed with that account's forum signature: edit it in the account's forum profile.
 
-Processing happens in the background right after a post is saved. Slow or briefly unavailable providers are retried; if the provider refuses the key (expired key, no credits or quota left), Baldrick pauses, keeps the waiting threads, shows the error in Kunena Fork's administrator and e-mails your notification list once, then resumes by itself when the provider answers again. Limits and timeouts are under **Advanced** at the bottom of the settings.
+Processing happens in the background right after a post is saved. Slow or briefly unavailable providers are retried; if the provider refuses the key (expired key, no credits or quota left), Baldrick pauses, keeps the waiting threads, shows the error in Meela's administrator and e-mails your notification list once, then resumes by itself when the provider answers again. Limits and timeouts are under **Advanced** at the bottom of the settings.
 
-On large forums (tens of thousands of posts or more) on MySQL/MariaDB or PostgreSQL, create the **search index** in Kunena > Baldrick AI (or `php cli/joomla.php kunena:baldrick:index`) at a quiet time: Baldrick then finds related threads in a fraction of a second instead of reading the latest 50,000 posts for each question.
+On large forums (tens of thousands of posts or more) on MySQL/MariaDB or PostgreSQL, create the **search index** in Meela > Baldrick AI (or `php cli/joomla.php kunena:baldrick:index`) at a quiet time: Baldrick then finds related threads in a fraction of a second instead of reading the latest 50,000 posts for each question.
 
 On hosts that block requests from the site to itself, or end the processing that runs after a page is sent (the activity log then shows "The previous attempt stopped before finishing"), set **Processing** to "Command line only" and run `php cli/joomla.php kunena:baldrick:process --no-interaction` from cron every minute (Joomla 3.x UTD). `php cli/joomla.php kunena:baldrick:check <post id>` tells why Baldrick would or wouldn't answer a post.
 
@@ -156,32 +153,32 @@ The posts Baldrick handles (and related public threads) are sent to the AI provi
 
 ## USERNAMES & NAMES
 
-By default, **Kunena > Configuration > Members > Usernames & Names** allows only common characters: usernames with the letters A to Z, digits and dashes; names with letters of any alphabet, digits, spaces and `. , ' - & ( )`; both starting with a letter or a digit. New accounts and changed usernames or names are checked everywhere (registration, profile edits, Joomla's user manager). To bring existing accounts in line, open **Kunena > Maintenance**: "Preview" shows how many accounts break the rules and the first changes, and "Normalise Usernames & Names" rewrites them. Make a backup first: members whose username changes must log in with the new one (Joomla's "Forgot your username?" sends it to them by e-mail).
+By default, **Meela > Configuration > Members > Usernames & Names** allows only common characters: usernames with the letters A to Z, digits and dashes; names with letters of any alphabet, digits, spaces and `. , ' - & ( )`; both starting with a letter or a digit. New accounts and changed usernames or names are checked everywhere (registration, profile edits, Joomla's user manager). To bring existing accounts in line, open **Meela > Maintenance**: "Preview" shows how many accounts break the rules and the first changes, and "Normalise Usernames & Names" rewrites them. Make a backup first: members whose username changes must log in with the new one (Joomla's "Forgot your username?" sends it to them by e-mail).
 
 ## SEARCH ENGINES & SOCIAL NETWORKS
 
-Structured data and the Open Graph / X card tags are on by default. In **Kunena > Configuration > SEO & Feeds** you can turn each of them off (e.g. when an SEO extension already writes them for the forum), choose a **default share image** for pages without an image of their own (1200 x 630 pixels recommended) and enter the site's **X account**.
+Structured data and the Open Graph / X card tags are on by default. In **Meela > Configuration > SEO & Feeds** you can turn each of them off (e.g. when an SEO extension already writes them for the forum), choose a **default share image** for pages without an image of their own (1200 x 630 pixels recommended) and enter the site's **X account**.
 
-On Joomla 3.x UTD, the core plugin **System - Structured Data & Social Tags** writes the tags of every page; Kunena Fork gives it the forum's own (threads, profiles, categories), and the plugin's settings (site name, publisher, default image, X account) apply to everything else. Test a thread with Google's [Rich Results Test](https://search.google.com/test/rich-results).
+On Joomla 3.x UTD, the core plugin **System - Structured Data & Social Tags** writes the tags of every page; Meela gives it the forum's own (threads, profiles, categories), and the plugin's settings (site name, publisher, default image, X account) apply to everything else. Test a thread with Google's [Rich Results Test](https://search.google.com/test/rich-results).
 
-**Member profiles:** Google asks for a link to each post's author (`author.url`, "Missing field url" in Search Console). Kunena Fork gives it only when guests may see profiles: turn on **Allow Guests to see User Profiles** in **Kunena > Configuration > Security & Moderation**. Guests then see only a member's avatar, name, role, rank, join date and posts; everything members write about themselves (website, social accounts, location, about me, signature) stays for logged-in users, so spammers gain nothing from a profile. Profiles of members without posts are not indexed.
+**Member profiles:** Google asks for a link to each post's author (`author.url`, "Missing field url" in Search Console). Meela gives it only when guests may see profiles: turn on **Allow Guests to see User Profiles** in **Meela > Configuration > Security & Moderation**. Guests then see only a member's avatar, name, role, rank, join date and posts; everything members write about themselves (website, social accounts, location, about me, signature) stays for logged-in users, so spammers gain nothing from a profile. Profiles of members without posts are not indexed.
 
 **XML sitemaps** (Joomla 3.x UTD): `php cli/joomla.php kunena:sitemap:generate --live-site=https://www.example.com` writes the forum's sitemaps into `media/kunena/sitemaps/` (an index, the categories, the threads by year and, with public profiles, the members who have posted; only what guests can see). Run it from cron, e.g. every 30 minutes, add `Sitemap: https://www.example.com/media/kunena/sitemaps/sitemap_index.xml` to the site's `robots.txt` and submit the same URL in Google Search Console. See [CLI-GUIDE.md](CLI-GUIDE.md#kunenasitemapgenerate).
 
 ## COMMAND LINE
 
-On Joomla 3.x UTD, Kunena Fork's tools also run from the command line (`php cli/joomla.php list kunena`): emptying the trash, installing and removing the sample data, and Baldrick AI's processing, search index and checks, and the XML sitemaps. See [CLI-GUIDE.md](CLI-GUIDE.md).
+On Joomla 3.x UTD, Meela's tools also run from the command line (`php cli/joomla.php list kunena`): emptying the trash, installing and removing the sample data, and Baldrick AI's processing, search index and checks, and the XML sitemaps. See [CLI-GUIDE.md](CLI-GUIDE.md).
 
 ## NOTES
 
-- Kunena's PHP support is limited by the Joomla core it runs on: Joomla 3.9 does not support PHP 8 and Joomla 3.10 supports only up to PHP 8.0. For proper support for PHP 7.1 to 8.5 just do yourself a favour and use [Joomla 3.x UTD](https://j3xutd.joomlaworks.net) - it's better, faster, more secure & current.
+- Meela's PHP support is limited by the Joomla core it runs on: Joomla 3.9 does not support PHP 8 and Joomla 3.10 supports only up to PHP 8.0. For proper support for PHP 7.1 to 8.5 just do yourself a favour and use [Joomla 3.x UTD](https://j3xutd.joomlaworks.net) - it's better, faster, more secure & current.
 - Of the third-party integration plugins Kunena used to bundle, only Community Builder's is kept (updated for security, only tested on MySQL); the plugins for AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM are removed from existing sites when upgrading.
-- Updates come through Joomla's own updater (**System > Update > Extensions**): Kunena Fork registers its update server (`https://joomlaworks.github.io/kunena-fork/update.xml`) for every Joomla 3.x from 3.9 on, Joomla 3.x UTD's future releases included. The official Kunena update server is no longer registered (it only offers Kunena 5.2.x).
+- Updates come through Joomla's own updater (**System > Update > Extensions**): Meela registers its update server (`https://joomlaworks.github.io/meela/update.xml`) for every Joomla 3.x from 3.9 on, Joomla 3.x UTD's future releases included. The official Kunena update server is no longer registered (it only offers Kunena 5.2.x).
 
 ## FOR DEVELOPERS
 
 See [AGENTS.md](AGENTS.md) for the repository layout, coding rules, how the installer works and how to test, and [CHANGELOG.md](CHANGELOG.md) for every change in detail.
 
-For development and test sites, **Kunena > Configuration > Development** stops all of Kunena Fork's e-mails (each one is written to Kunena Fork's log instead) and turns on Kunena Fork's debug mode.
+For development and test sites, **Meela > Configuration > Development** stops all of Meela's e-mails (each one is written to Meela's log instead) and turns on Meela's debug mode.
 
 Copyright (C) 2008 - 2026 Kunena Team, JoomlaWorks Ltd. and contributors.

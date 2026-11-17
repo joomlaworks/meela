@@ -828,7 +828,7 @@ abstract class KunenaBaldrick
             }
         } elseif ($staff) {
             // The last post comes from the staff: they are handling the thread
-            $why = 'The poster is staff (Super User, Kunena administrator, or Kunena moderator of this category).';
+            $why = 'The poster is staff (Super User, Meela administrator, or Meela moderator of this category).';
 
             return '';
         }

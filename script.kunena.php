@@ -182,7 +182,7 @@ class Com_KunenaInstallerScript
 
         // Prevent to be installed on Joomla! 4.x and later
         if (version_compare(JVERSION, '4.0', '>=')) {
-            $app->enqueueMessage(sprintf('Joomla! %s is not supported. Kunena 5.3 only works on Joomla! 3.x (3.9 - 3.18, including Joomla 3.x UTD)', JVERSION), 'notice');
+            $app->enqueueMessage(sprintf('Joomla! %s is not supported. Meela only works on Joomla! 3.x (3.9 - 3.18, including Joomla 3.x UTD)', JVERSION), 'notice');
 
             return false;
         }
@@ -435,7 +435,7 @@ class Com_KunenaInstallerScript
             $tmpInstaller = new Installer();
 
             if (!$tmpInstaller->install($dir)) {
-                $app->enqueueMessage(sprintf('Kunena: failed to install the bundled %s "%s".', $type, trim($group . '/' . $element, '/')), 'error');
+                $app->enqueueMessage(sprintf('Meela: failed to install the bundled %s "%s".', $type, trim($group . '/' . $element, '/')), 'error');
 
                 continue;
             }
@@ -580,11 +580,13 @@ class Com_KunenaInstallerScript
             }
         }
 
-        // The official Kunena 5.2 update server only knows about the legacy package.
+        // The official Kunena 5.2 update server only knows about the legacy package; Kunena Fork's (5.3 - 5.4) was renamed
+        // Meela's in 5.5.0 (Joomla adds the new address from the manifest and would keep querying the old one)
         $query = $db->getQuery(true)
             ->select($db->quoteName('update_site_id'))
             ->from($db->quoteName('#__update_sites'))
-            ->where($db->quoteName('location') . ' LIKE ' . $db->quote('https://update.kunena.org/%'));
+            ->where('(' . $db->quoteName('location') . ' LIKE ' . $db->quote('https://update.kunena.org/%')
+                . ' OR ' . $db->quoteName('location') . ' = ' . $db->quote('https://joomlaworks.github.io/kunena-fork/update.xml') . ')');
         $siteIds = array_map('intval', (array) $db->setQuery($query)->loadColumn());
 
         if ($siteIds) {
@@ -762,7 +764,7 @@ class Com_KunenaInstallerScript
 
         // Do not install over Git repository (K1.6+).
         if (class_exists('KunenaForum') && method_exists('KunenaForum', 'isDev') && KunenaForum::isDev()) {
-            $app->enqueueMessage('Oops! You should not install Kunena over your Git repository!', 'notice');
+            $app->enqueueMessage('Oops! You should not install Meela over your Git repository!', 'notice');
 
             return false;
         }
@@ -802,7 +804,7 @@ class Com_KunenaInstallerScript
             }
         }
 
-        $app->enqueueMessage(sprintf('Sorry, it is not possible to downgrade Kunena %s to version %s.', $installed, $version), 'notice');
+        $app->enqueueMessage(sprintf('Sorry, it is not possible to downgrade Meela %s to version %s.', $installed, $version), 'notice');
 
         return false;
     }

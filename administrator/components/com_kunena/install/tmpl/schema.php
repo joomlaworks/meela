@@ -24,7 +24,7 @@ $this->document->addStyleSheet(Uri::base(true) . '/components/com_kunena/install
 				</div>
 			</div>
 			<div class="n">
-				<span class="step">Kunena Database Schema</span>
+				<span class="step">Meela Database Schema</span>
 			</div>
 			<div class="c">
 				<div class="c">

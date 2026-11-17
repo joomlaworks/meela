@@ -17,7 +17,7 @@ use Joomla\CMS\Console\AbstractCommand;
 use Joomla\CMS\Console\CommandIO;
 
 /**
- * kunena:trash:purge - empties Kunena's trash (same as Kunena > Maintenance > Empty Trash).
+ * kunena:trash:purge - empties Kunena's trash (same as Meela > Maintenance > Empty Trash).
  *
  * @since 5.3.0
  */
@@ -26,10 +26,10 @@ class KunenaTrashPurgeCommand extends AbstractCommand
 {
     protected $name = 'kunena:trash:purge';
 
-    protected $description = 'Empty Kunena\'s trash: permanently delete every trashed thread and post';
+    protected $description = 'Empty Meela\'s trash: permanently delete every trashed thread and post';
 
-    protected $help = 'Permanently deletes every thread and post in Kunena\'s trash, with their attachments (files included), '
-        . 'polls, thank-yous and ratings, then updates the forum statistics, like Kunena > Maintenance > Empty Trash. '
+    protected $help = 'Permanently deletes every thread and post in Meela\'s trash, with their attachments (files included), '
+        . 'polls, thank-yous and ratings, then updates the forum statistics, like Meela > Maintenance > Empty Trash. '
         . 'This cannot be undone. Asks for a confirmation when the command is interactive; --dry-run only counts what '
         . 'would be deleted. Suitable for cron jobs (with --no-interaction).';
 
@@ -46,10 +46,10 @@ class KunenaTrashPurgeCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Empty Trash');
+        $io->title('Meela: Empty Trash');
 
         if (!kunenaConsoleLoad() || !class_exists('KunenaForumTrash')) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -130,7 +130,7 @@ function kunenaConsoleLoad()
 }
 
 /**
- * kunena:sampledata:install - installs the sample data (same as Kunena > Tools > Sample Data).
+ * kunena:sampledata:install - installs the sample data (same as Meela > Tools > Sample Data).
  *
  * @since 5.3.0
  */
@@ -139,11 +139,11 @@ class KunenaSampledataInstallCommand extends AbstractCommand
 {
     protected $name = 'kunena:sampledata:install';
 
-    protected $description = 'Install Kunena\'s sample data (categories, users, threads and posts to style and test the forum with)';
+    protected $description = 'Install Meela\'s sample data (categories, users, threads and posts to style and test the forum with)';
 
     protected $help = 'Installs a complete fictional forum: sections and categories, sample users (unusable for signing in) with generated avatars, '
         . 'moderators, an announcement, and about 60 threads with 400 posts (polls, BBCode, image attachments, thank-yous, '
-        . 'sticky, locked, unapproved and trashed posts), like Kunena > Tools > Sample Data. Refused when the sample data '
+        . 'sticky, locked, unapproved and trashed posts), like Meela > Tools > Sample Data. Refused when the sample data '
         . 'is already installed. --dry-run shows what would be created. For development and test sites.';
 
     protected $dryRun = true;
@@ -159,10 +159,10 @@ class KunenaSampledataInstallCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Install Sample Data');
+        $io->title('Meela: Install Sample Data');
 
         if (!kunenaConsoleLoad()) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -194,7 +194,7 @@ class KunenaSampledataInstallCommand extends AbstractCommand
 }
 
 /**
- * kunena:sampledata:remove - removes the sample data (same as Kunena > Tools > Sample Data).
+ * kunena:sampledata:remove - removes the sample data (same as Meela > Tools > Sample Data).
  *
  * @since 5.3.0
  */
@@ -203,9 +203,9 @@ class KunenaSampledataRemoveCommand extends AbstractCommand
 {
     protected $name = 'kunena:sampledata:remove';
 
-    protected $description = 'Remove Kunena\'s sample data';
+    protected $description = 'Remove Meela\'s sample data';
 
-    protected $help = 'Deletes exactly what kunena:sampledata:install (or Kunena > Tools > Sample Data) created: sample categories, '
+    protected $help = 'Deletes exactly what kunena:sampledata:install (or Meela > Tools > Sample Data) created: sample categories, '
         . 'users, threads, posts and attachments. Posts which other users added to sample threads are kept with their thread, '
         . 'and so are sample categories which contain other threads. Asks for a confirmation when interactive; --dry-run '
         . 'shows what would be removed.';
@@ -223,10 +223,10 @@ class KunenaSampledataRemoveCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Remove Sample Data');
+        $io->title('Meela: Remove Sample Data');
 
         if (!kunenaConsoleLoad()) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -281,7 +281,7 @@ class KunenaBaldrickProcessCommand extends AbstractCommand
 
     protected $description = 'Process the threads waiting for Baldrick, the forum\'s AI first responder';
 
-    protected $help = 'Processes the threads queued for Baldrick (Kunena - Baldrick AI plugin): triage, related threads, answer, '
+    protected $help = 'Processes the threads queued for Baldrick (Meela - Baldrick AI plugin): triage, related threads, answer, '
         . 'replies, spam actions and notifications, like the automatic processing after a page is sent. Run it from cron '
         . '(e.g. every minute, with --no-interaction) when the plugin\'s processing is set to "Command line only". '
         . '--dry-run lists the threads due without calling any AI provider. --unlock takes over threads left "being processed" '
@@ -312,16 +312,16 @@ class KunenaBaldrickProcessCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Baldrick AI');
+        $io->title('Meela: Baldrick AI');
 
         if (!kunenaConsoleLoad() || !class_exists('KunenaBaldrick') || !KunenaBaldrick::hasTables()) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
 
         if (!KunenaBaldrick::isEnabled()) {
-            $io->warning('The plugin "Kunena - Baldrick AI" is disabled: nothing to do.');
+            $io->warning('The plugin "Meela - Baldrick AI" is disabled: nothing to do.');
 
             return self::SUCCESS;
         }
@@ -393,7 +393,7 @@ class KunenaBaldrickProcessCommand extends AbstractCommand
 }
 
 /**
- * kunena:baldrick:index - creates the full-text index Baldrick uses to find related threads (Kunena > Baldrick AI has the
+ * kunena:baldrick:index - creates the full-text index Baldrick uses to find related threads (Meela > Baldrick AI has the
  * same button). For large forums, where building it from the browser could hit time limits.
  *
  * @since 5.3.0
@@ -423,10 +423,10 @@ class KunenaBaldrickIndexCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Baldrick AI search index');
+        $io->title('Meela: Baldrick AI search index');
 
         if (!kunenaConsoleLoad() || !class_exists('KunenaBaldrickRetriever')) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -536,10 +536,10 @@ class KunenaBaldrickCheckCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Baldrick AI check');
+        $io->title('Meela: Baldrick AI check');
 
         if (!kunenaConsoleLoad() || !class_exists('KunenaBaldrick') || !KunenaBaldrick::hasTables()) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -633,10 +633,10 @@ class KunenaSitemapGenerateCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: sitemaps');
+        $io->title('Meela: sitemaps');
 
         if (!kunenaConsoleLoad()) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -699,7 +699,7 @@ class KunenaSitemapGenerateCommand extends AbstractCommand
 
 /**
  * kunena:users:normalize: rewrite the usernames and names which break the rules of Configuration > Members > Usernames &
- * Names, like Kunena > Maintenance > Normalise Usernames & Names.
+ * Names, like Meela > Maintenance > Normalise Usernames & Names.
  *
  * @since 5.5.0
  */
@@ -708,10 +708,10 @@ class KunenaUsersNormalizeCommand extends AbstractCommand
 {
     protected $name = 'kunena:users:normalize';
 
-    protected $description = 'Normalise usernames and names that break Kunena\'s rules (Configuration > Members)';
+    protected $description = 'Normalise usernames and names that break Meela\'s rules (Configuration > Members)';
 
-    protected $help = 'Rewrites the usernames and names of existing accounts that break the rules in Kunena > Configuration > '
-        . 'Members > Usernames & Names, like Kunena > Maintenance > Normalise Usernames & Names: characters that aren\'t allowed '
+    protected $help = 'Rewrites the usernames and names of existing accounts that break the rules in Meela > Configuration > '
+        . 'Members > Usernames & Names, like Meela > Maintenance > Normalise Usernames & Names: characters that aren\'t allowed '
         . 'become dashes in usernames (accented and Greek letters written in Latin letters) and spaces in names, leading '
         . 'symbols are removed, and a username another account already has gets the account\'s ID added. Members whose '
         . 'username changes must log in with the new one. Asks for a confirmation when the command is interactive; '
@@ -730,17 +730,17 @@ class KunenaUsersNormalizeCommand extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: Normalise Usernames & Names');
+        $io->title('Meela: Normalise Usernames & Names');
 
         if (!kunenaConsoleLoad() || !class_exists('KunenaUserNormalizer')) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
 
         if (!KunenaUserNormalizer::isEnabled()) {
             $io->setData('changed', array());
-            $io->success('Both rules are off in Kunena > Configuration > Members: there is nothing to normalise.');
+            $io->success('Both rules are off in Meela > Configuration > Members: there is nothing to normalise.');
 
             return self::SUCCESS;
         }
@@ -811,7 +811,7 @@ class KunenaUsersNormalizeCommand extends AbstractCommand
 }
 
 /**
- * kunena:database:utf8mb4: convert Kunena's MySQL tables whose columns aren't utf8mb4 yet, like Kunena > Maintenance >
+ * kunena:database:utf8mb4: convert Kunena's MySQL tables whose columns aren't utf8mb4 yet, like Meela > Maintenance >
  * Convert Kunena's tables to utf8mb4 (without the web server's time limit, for large forums).
  *
  * @since 5.5.0
@@ -821,10 +821,10 @@ class KunenaDatabaseUtf8mb4Command extends AbstractCommand
 {
     protected $name = 'kunena:database:utf8mb4';
 
-    protected $description = 'Convert Kunena\'s MySQL tables to utf8mb4 (emoji in posts, no "Illegal mix of collations")';
+    protected $description = 'Convert Meela\'s MySQL tables to utf8mb4 (emoji in posts, no "Illegal mix of collations")';
 
-    protected $help = 'Converts every Kunena table whose columns are still utf8 (utf8mb3) to utf8mb4 (utf8mb4_unicode_ci), one '
-        . 'table at a time, like Kunena > Maintenance. Kunena\'s installer only changed the tables\' default character set, '
+    protected $help = 'Converts every Meela table whose columns are still utf8 (utf8mb3) to utf8mb4 (utf8mb4_unicode_ci), one '
+        . 'table at a time, like Meela > Maintenance. The installer only changed the tables\' default character set, '
         . 'so forums installed before utf8mb4 kept utf8mb3 columns: posts can\'t hold emoji, and searching for them fails '
         . 'with "Illegal mix of collations". Large tables take a while and are locked meanwhile: make a backup and run it '
         . 'at a quiet time. MySQL and MariaDB only. --dry-run lists the tables.';
@@ -842,10 +842,10 @@ class KunenaDatabaseUtf8mb4Command extends AbstractCommand
      */
     protected function doExecute(CommandIO $io)
     {
-        $io->title('Kunena: tables to utf8mb4');
+        $io->title('Meela: tables to utf8mb4');
 
         if (!kunenaConsoleLoad() || !class_exists('KunenaDatabaseUtf8mb4')) {
-            $io->error('Kunena is not installed, or its installation has not been completed.');
+            $io->error('Meela is not installed, or its installation has not been completed.');
 
             return self::FAILURE;
         }
@@ -866,7 +866,7 @@ class KunenaDatabaseUtf8mb4Command extends AbstractCommand
 
         if (!$rows) {
             $io->setData('tables', array());
-            $io->success('Every Kunena table is in utf8mb4.');
+            $io->success('Every Meela table is in utf8mb4.');
 
             return self::SUCCESS;
         }

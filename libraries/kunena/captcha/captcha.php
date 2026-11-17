@@ -158,7 +158,7 @@ abstract class KunenaCaptcha
 
         // Fail closed: never accept a post which should have been protected by a CAPTCHA.
         if ($plugin === '') {
-            self::log('A CAPTCHA is required by Kunena\'s configuration, but no CAPTCHA plugin is selected or enabled in Global Configuration.');
+            self::log('A CAPTCHA is required by Meela\'s configuration, but no CAPTCHA plugin is selected or enabled in Global Configuration.');
             $error = Text::sprintf('COM_KUNENA_RECAPTCHA_ERROR_INVALID_CONFIGURATION', Text::_('COM_KUNENA_CAPTCHA_NOT_SELECTED'));
 
             return false;

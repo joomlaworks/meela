@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE extension>
 <extension type="library" version="2.5" method="upgrade">
-    <name>Kunena Framework</name>
+    <name>Meela Framework</name>
     <libraryname>kunena</libraryname>
     <version>5.5.0</version>
     <versionname>Tharsis</versionname>
     <creationDate>2026-11-17</creationDate>
-    <author>Kunena Team</author>
-    <authorEmail>kunena@kunena.org</authorEmail>
-    <authorUrl>https://www.kunena.org</authorUrl>
-    <copyright>(C) 2008 - 2026 Kunena Team. All rights reserved.</copyright>
+    <author>JoomlaWorks Ltd.</author>
+    <authorUrl>https://www.joomlaworks.net</authorUrl>
+    <copyright>(C) 2008 - 2026 Kunena Team, (C) 2026 JoomlaWorks Ltd. All rights reserved.</copyright>
     <license>GNU/GPLv3 or later</license>
-    <description>Kunena Framework.</description>
+    <description>Meela Framework.</description>
     <files>
         <folder>activity</folder>
         <folder>attachment</folder>

@@ -145,7 +145,7 @@ class plgQuickiconKunena extends CMSPlugin
 
             $img  = $useIcons ? $icon : 'kunena/icons/icon-48-kupdate-update-white.png';
             $icon = 'kunena/icons/icon-48-kupdate-update-white.png';
-            $text = 'Kunena ' . $updateInfo->version . '<br />' . Text::_('PLG_QUICKICON_KUNENA_UPDATE_NOW');
+            $text = 'Meela ' . $updateInfo->version . '<br />' . Text::_('PLG_QUICKICON_KUNENA_UPDATE_NOW');
             $link = 'index.php?option=com_installer&view=update&filter_search=kunena';
         } elseif (!empty($updateInfo->addons)) {
             // Has updated add-ons

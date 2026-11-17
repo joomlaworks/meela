@@ -122,7 +122,7 @@ class KunenaAdminVersion
      */
     public static function getVersionHTML()
     {
-        return 'Kunena ' . strtoupper(KunenaForum::version()) . ' | ' . KunenaForum::versionDate() . ' [ ' . KunenaForum::versionName() . ' ]';
+        return 'Meela ' . strtoupper(KunenaForum::version()) . ' | ' . KunenaForum::versionDate();
     }
 
     /**
@@ -149,7 +149,7 @@ class KunenaAdminVersion
     public static function getLongVersionHTML()
     {
         // 5.3.0: the footer of the administrator pages shows the name and version only (credits: the dashboard)
-        return 'Kunena ' . htmlspecialchars(KunenaForum::version(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        return 'Meela ' . htmlspecialchars(KunenaForum::version(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }
 

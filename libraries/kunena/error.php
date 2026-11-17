@@ -154,7 +154,7 @@ abstract class KunenaError
         } elseif (KunenaFactory::getUser()->isAdmin() && Factory::getApplication()->isClient('site')) {
             $app->enqueueMessage('Exception throw at line '  . $exception->getLine(). ' in file '.$exception->getFile(). ' with message '.$exception->getMessage(), 'error');
         } else {
-            $app->enqueueMessage('Kunena ' . Text::_('COM_KUNENA_INTERNAL_ERROR'), 'error');
+            $app->enqueueMessage('Meela ' . Text::_('COM_KUNENA_INTERNAL_ERROR'), 'error');
         }
 
         KunenaLog::log(KunenaLog::TYPE_ERROR, KunenaLog::LOG_ERROR_FATAL, 'Exception throw at line '  . $exception->getLine(). ' in file '.$exception->getFile(). ' with message '.$exception->getMessage());

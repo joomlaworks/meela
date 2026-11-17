@@ -1,21 +1,21 @@
-# Kunena Fork on the command line
+# Meela on the command line
 
-Kunena Fork adds commands to Joomla 3.x UTD's command line, `php cli/joomla.php`. They do from a terminal or a cron job
+Meela adds commands to Joomla 3.x UTD's command line, `php cli/joomla.php`. They do from a terminal or a cron job
 what the matching administrator tools do, and they are also offered to AI assistants through UTD's MCP server.
 
 ## Requirements
 
 - **Joomla 3.x UTD.** Stock Joomla 3 has no `cli/joomla.php` command line; there the plugin does nothing.
-- **The plugin "Console - Kunena"**, installed and enabled with Kunena Fork.
-- **A completed installation:** Kunena Fork's installation wizard must have run. Otherwise every command stops with
-  "Kunena is not installed, or its installation has not been completed."
+- **The plugin "Console - Meela"**, installed and enabled with Meela.
+- **A completed installation:** Meela's installation wizard must have run. Otherwise every command stops with
+  "Meela is not installed, or its installation has not been completed."
 
 Run the commands from the site's root folder, as the user that owns the site's files (so that files they create or
 delete, such as attachments and avatars, keep the right owner):
 
 ```bash
 cd /path/to/site
-php cli/joomla.php list kunena                      # the Kunena commands
+php cli/joomla.php list kunena                      # the Meela commands
 php cli/joomla.php help kunena:trash:purge          # a command's options and help text
 ```
 
@@ -24,14 +24,14 @@ php cli/joomla.php help kunena:trash:purge          # a command's options and he
 | Command | Does | Same as |
 |---|---|---|
 | [`kunena:baldrick:check`](#kunenabaldrickcheck) | Tells whether Baldrick AI would answer a post, and why not | - |
-| [`kunena:baldrick:index`](#kunenabaldrickindex) | Creates Baldrick AI's full-text search index | Kunena > Baldrick AI > Create the search index |
-| [`kunena:baldrick:process`](#kunenabaldrickprocess) | Processes the threads waiting for Baldrick AI | Kunena > Baldrick AI > Process the queue now |
-| [`kunena:database:utf8mb4`](#kunenadatabaseutf8mb4) | Converts Kunena's MySQL tables to utf8mb4 | Kunena > Maintenance > Convert Kunena's tables to utf8mb4 |
-| [`kunena:sampledata:install`](#kunenasampledatainstall) | Installs the sample forum | Kunena > Tools > Sample Data |
-| [`kunena:sampledata:remove`](#kunenasampledataremove) | Removes the sample forum | Kunena > Tools > Sample Data |
+| [`kunena:baldrick:index`](#kunenabaldrickindex) | Creates Baldrick AI's full-text search index | Meela > Baldrick AI > Create the search index |
+| [`kunena:baldrick:process`](#kunenabaldrickprocess) | Processes the threads waiting for Baldrick AI | Meela > Baldrick AI > Process the queue now |
+| [`kunena:database:utf8mb4`](#kunenadatabaseutf8mb4) | Converts Meela's MySQL tables to utf8mb4 | Meela > Maintenance > Convert Meela's tables to utf8mb4 |
+| [`kunena:sampledata:install`](#kunenasampledatainstall) | Installs the sample forum | Meela > Tools > Sample Data |
+| [`kunena:sampledata:remove`](#kunenasampledataremove) | Removes the sample forum | Meela > Tools > Sample Data |
 | [`kunena:sitemap:generate`](#kunenasitemapgenerate) | Writes the forum's XML sitemaps | - |
-| [`kunena:trash:purge`](#kunenatrashpurge) | Permanently deletes every trashed thread and post | Kunena > Maintenance > Empty Trash |
-| [`kunena:users:normalize`](#kunenausersnormalize) | Rewrites usernames and names that break the rules | Kunena > Maintenance > Normalise Usernames & Names |
+| [`kunena:trash:purge`](#kunenatrashpurge) | Permanently deletes every trashed thread and post | Meela > Maintenance > Empty Trash |
+| [`kunena:users:normalize`](#kunenausersnormalize) | Rewrites usernames and names that break the rules | Meela > Maintenance > Normalise Usernames & Names |
 
 All of them support `--dry-run` and run with Super User rights (whoever can run the site's command line can change it
 anyway). All change the site, except `kunena:baldrick:check` without `--queue`; `kunena:sitemap:generate` only writes
@@ -40,8 +40,8 @@ files into `media/kunena/sitemaps/`.
 ### `kunena:baldrick:check`
 
 Applies Baldrick's rules to one post, as things are now, and says which rule stops it: plugin not configured, post or
-thread unpublished, category not allowed (including "Public categories only"), poster is staff (Super User, Kunena
-administrator, or Kunena moderator of the category: Kunena > Users, independent of Joomla's user groups), dry-run mode,
+thread unpublished, category not allowed (including "Public categories only"), poster is staff (Super User, Meela
+administrator, or Meela moderator of the category: Meela > Users, independent of Joomla's user groups), dry-run mode,
 previous post too recent (the inactivity days), text too short, or the reply limit per thread reached.
 
 Baldrick decides **only when a post becomes visible** (posted, or approved). A post stopped by a rule that no longer
@@ -78,7 +78,7 @@ JSON data: `index` (the state; `created` and `seconds` after creating it).
 
 ### `kunena:baldrick:process`
 
-Processes the threads queued for Baldrick, the forum's AI first responder (plugin "Kunena - Baldrick AI"): triage,
+Processes the threads queued for Baldrick, the forum's AI first responder (plugin "Meela - Baldrick AI"): triage,
 related threads, answer, replies, spam actions and notification e-mails, exactly like the automatic processing that
 runs after a page is sent. Use it when the plugin's **Processing** setting is "Command line only", from cron, e.g. every
 minute.
@@ -109,10 +109,10 @@ JSON data: `queue` (threads due, being processed), `processed` (each job and its
 
 ### `kunena:database:utf8mb4`
 
-MySQL and MariaDB only. Kunena's installer only ever changed its tables' *default* character set to utf8mb4, so forums
+MySQL and MariaDB only. The installer (since Kunena) only ever changed its tables' *default* character set to utf8mb4, so forums
 installed before utf8mb4 kept their columns in utf8 (utf8mb3): posts can't hold emoji and other 4-byte characters, and
 searching for them fails with `Illegal mix of collations (utf8mb3_general_ci,IMPLICIT) and (utf8mb4_..., COERCIBLE) for
-operation 'like'`. This converts every Kunena table that still has such columns to `utf8mb4_unicode_ci`, one table at
+operation 'like'`. This converts every Meela table that still has such columns to `utf8mb4_unicode_ci`, one table at
 a time, and reports each table's time.
 
 Large tables (the posts) take a while and are locked meanwhile: make a backup and run it at a quiet time. On MySQL 5.5
@@ -144,7 +144,7 @@ JSON data: `installed` (what was created, per kind).
 
 ### `kunena:sampledata:remove`
 
-Removes exactly what `kunena:sampledata:install` (or Kunena > Tools > Sample Data) created: sample categories, users,
+Removes exactly what `kunena:sampledata:install` (or Meela > Tools > Sample Data) created: sample categories, users,
 threads, posts and attachments. Posts that other users added to sample threads are kept with their thread, and sample
 categories that contain other threads are kept too.
 
@@ -168,11 +168,11 @@ Writes the forum's XML sitemaps as static files into `media/kunena/sitemaps/`, r
 - `threads-YYYY.xml`: the threads started in that year, newest year first (`threads-YYYY-2.xml`, `-3`... when a year
   has more than 50,000 threads, the protocol's limit per file);
 - `profiles.xml`: the profiles of members with at least one post, an enabled account and no ban in force, only when
-  "Allow Guests to see User Profiles" is on (Kunena > Configuration > Security & Moderation); `profiles-2.xml`... past
+  "Allow Guests to see User Profiles" is on (Meela > Configuration > Security & Moderation); `profiles-2.xml`... past
   50,000 members. Profiles have no modification time.
 
 Only what a guest can see is listed: published threads of categories guests can read, each by its first page, without
-the placeholders left by moved threads. The URLs are the site's own SEF URLs, built by Kunena's router with the site's
+the placeholders left by moved threads. The URLs are the site's own SEF URLs, built by Meela's router with the site's
 menu items, exactly as on the pages. Files with nothing left to list (a year without threads, or the profiles once
 guests may no longer see them) are removed. Each file is written to a
 temporary file first and then renamed, so search engines never read half a file. Memory stays low on large forums
@@ -204,7 +204,7 @@ any); with `--dry-run`, `files` and the plan.
 
 ### `kunena:trash:purge`
 
-Empties Kunena's trash: permanently deletes every trashed thread (with all its posts) and every trashed post of live
+Empties Meela's trash: permanently deletes every trashed thread (with all its posts) and every trashed post of live
 threads, with their attachments (the files too), polls, thank-yous and ratings, then updates the forum's counters.
 **This cannot be undone.**
 
@@ -221,7 +221,7 @@ JSON data (`--format=json`): `trash` (the counts), `plan` (dry run), `deleted` (
 
 ### `kunena:users:normalize`
 
-Rewrites the usernames and names of existing accounts that break the rules in Kunena > Configuration > Members >
+Rewrites the usernames and names of existing accounts that break the rules in Meela > Configuration > Members >
 Usernames & Names (usernames: letters A to Z, digits and dashes; names: letters of any alphabet, digits, spaces and
 `. , ' - & ( )`; both starting with a letter or a digit). Characters that aren't allowed become dashes in usernames
 (accented and Greek letters are written in Latin letters: "Φώτης" becomes "Fotis") and spaces in names, and leading
@@ -257,7 +257,7 @@ These come with Joomla 3.x UTD's command line:
 | Code | Meaning |
 |---|---|
 | 0 | Done (also when there was nothing to do) |
-| 1 | Failed (e.g. Kunena not installed, an item that could not be deleted, a thread Baldrick failed to process) |
+| 1 | Failed (e.g. Meela not installed, an item that could not be deleted, a thread Baldrick failed to process) |
 | 4 | Refused (e.g. a confirmation answered "no") |
 
 ## AI assistants (MCP)

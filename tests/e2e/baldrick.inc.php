@@ -333,7 +333,7 @@ $devMail(0);
 $ld = $logOf($td);
 clearstatcache();
 $mail = is_file($mailLog) ? file_get_contents($mailLog) : '';
-result('bk-dev-no-mail', $ld && $ld[0]['action'] === 'replied' && strpos($ld[0]['message'], 'turned off in Kunena > Configuration > Development') !== false && strpos($mail, 'Development mail question') === false, json_encode($ld));
+result('bk-dev-no-mail', $ld && $ld[0]['action'] === 'replied' && strpos($ld[0]['message'], 'turned off in Meela > Configuration > Development') !== false && strpos($mail, 'Development mail question') === false, json_encode($ld));
 // The member's extra posts would make them a "trusted author" for later spam checks
 kexecJson('JFactory::getDbo()->setQuery("UPDATE #__kunena_messages SET hold = 2 WHERE thread IN (' . (int) $tn . ', ' . (int) $te . ', ' . (int) $td . ') AND userid != " . (int) KunenaBaldrick::getUserId())->execute(); return json_encode("ok");');
 
