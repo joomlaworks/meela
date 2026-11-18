@@ -69,7 +69,11 @@ JS-MIGRATION.md                         plan for rewriting Kunena's JavaScript w
   root and one level below for manifests; the root `kunena.xml` must be the one it finds).
 - Language strings: `administrator/components/com_kunena/language/en-GB/` (admin and the shared
   `en-GB.com_kunena.libraries.ini`, which is also loaded in the frontend) and `components/com_kunena/language/en-GB/`.
-  Other languages fall back to the constant name, so add new strings to en-GB.
+  Add new strings to en-GB first; the 53 other languages (a `xx-XX/` folder next to every `en-GB/` one, same file
+  names and order) show English for a string they lack (Configuration "fallback_english") until it is translated.
+  When translating: keep placeholders, HTML tags and attributes, BBCode and product names (Meela, Kunena, Baldrick,
+  Blackadder, Joomla) exactly; write quotes as `\"` (never `"_QQ_"`: Joomla 3.x UTD parses in raw mode, where it shows
+  up literally); use the terms the language's existing strings already use.
 - Several files (mostly templates) are ISO-8859-1 / contain non-UTF-8 bytes: when editing them with scripts, read and
   write them as latin-1, and note that some `grep` builds treat them as binary (use `grep -a`).
 

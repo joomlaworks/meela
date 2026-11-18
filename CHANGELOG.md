@@ -3,6 +3,33 @@
 All notable changes to Meela (called Kunena Fork up to 5.4), the continuation of Kunena, are documented here. For a short overview see [README.md](README.md); for
 how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md).
 
+## [Unreleased]
+
+### Added
+
+- **Every language up to date** (JoomlaWorks Ltd.): Meela's 53 languages besides English get the strings Meela added
+  or reworded since Kunena 5.2.14 (464 per language: Baldrick AI, Maintenance, Blackadder, usernames and names, structured
+  data and sitemaps, the installer's and the administrator's new texts), translated with Claude (Haiku for the widely
+  used languages, Sonnet for the others) from each language's own existing terms, so new and old strings use the same
+  words and form of address. Every string was checked for placeholders, HTML tags and attributes, quotes and product
+  names, and every file is parsed the way Joomla 3.x UTD reads it. Native speakers' corrections are welcome, especially
+  for Sorani Kurdish, Khmer and Uyghur.
+- **The frontend in every language**: the translations of the forum's own pages (`components/com_kunena/language/`,
+  about 1,470 strings per language), which Kunena shipped in a separate language pack, are now part of the package,
+  taken from the official Kunena 5.2.14 language pack. The Blackadder template and the Baldrick AI, Console and
+  Quick Icon plugins get language files of their own too.
+- Strings whose only change was "Kunena" becoming "Meela" keep their existing translation with the new name.
+
+### Changed
+
+- Translation files follow the English files' order and layout; strings that no longer exist in English (mostly the
+  old sample data's ranks and texts) are removed, and the deprecated `"_QQ_"` quotes are written as `\"`: Joomla 3.x
+  UTD reads language files in raw mode, where `_QQ_` used to appear on screen.
+- Sites which installed Kunena's separate language pack keep its files in the site's `language/` folder, which Joomla
+  reads first: they show the old translations, with the new strings in English. Uninstalling that pack (Extensions >
+  Manage, type "File", "Kunena Language") brings Meela's own translations in.
+- Baldrick AI's spam setting explains when an e-mail is sent more clearly.
+
 ## [5.5.0] - 2026-11-18
 
 ### Changed
