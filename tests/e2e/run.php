@@ -868,6 +868,60 @@ return json_encode(array("pending" => $pending, "found" => $found, "stored" => $
                     && $r && !empty($r['success']) && !empty($r['done']) && $after['pending'] === array() && $after['found'] === 1 && $after['stored'];
                 result('utf8mb4', $ok, 'before=' . json_encode($old) . ' cli=' . json_encode(isset($cli['data']) ? $cli['data'] : $cli) . ' job=' . json_encode($r) . ' after=' . json_encode($after));
                 break;
+            case 'langpack':
+                // A site upgraded from Kunena 5.2 with its separate language pack: records, manifests and files which
+                // Joomla would read before Meela's own translations (the next install removes them, see 'langcheck')
+                $x = kexecJson(
+                    <<<'PHP'
+$db = JFactory::getDbo();
+foreach (array(array('package', 'pkg_kunena_languages', 'Kunena Language Pack'), array('file', 'com_kunena_el-GR', 'Kunena Language - Greek (Greece)')) as $e) {
+    $row = (object) array('name' => $e[2], 'type' => $e[0], 'element' => $e[1], 'folder' => '', 'client_id' => 0, 'enabled' => 1, 'access' => 1, 'protected' => 0,
+        'manifest_cache' => '{}', 'params' => '{}', 'custom_data' => '', 'system_data' => '', 'checked_out' => 0, 'ordering' => 0, 'state' => 0);
+    $db->insertObject('#__extensions', $row);
+}
+@mkdir(JPATH_MANIFESTS . '/packages/kunena_languages', 0755, true);
+@mkdir(JPATH_MANIFESTS . '/files/com_kunena_el-GR', 0755, true);
+file_put_contents(JPATH_MANIFESTS . '/packages/pkg_kunena_languages.xml', '<extension type="package"/>');
+file_put_contents(JPATH_MANIFESTS . '/files/com_kunena_el-GR.xml', '<extension type="file"/>');
+$files = array(
+    JPATH_SITE . '/language/el-GR/el-GR.com_kunena.ini', JPATH_SITE . '/language/el-GR/el-GR.com_kunena.templates.ini',
+    JPATH_SITE . '/language/el-GR/el-GR.kunena_tmpl_crypsis.ini', JPATH_SITE . '/language/en-GB/en-GB.com_kunena.ini',
+    JPATH_ADMINISTRATOR . '/language/el-GR/el-GR.com_kunena.sys.ini', JPATH_ADMINISTRATOR . '/language/el-GR/el-GR.plg_kunena_joomla.sys.ini',
+    JPATH_ADMINISTRATOR . '/language/en-GB/en-GB.com_kunena.views.ini',
+    // must stay: Meela's module, a third-party template's file
+    JPATH_SITE . '/language/el-GR/el-GR.mod_kunenalatest.ini', JPATH_SITE . '/language/el-GR/el-GR.kunena_tmpl_acme.ini');
+foreach ($files as $f) { @mkdir(dirname($f), 0755, true); file_put_contents($f, 'COM_KUNENA_OLD="old"' . "\n"); }
+$db->setQuery("SELECT COUNT(*) FROM #__extensions WHERE element IN ('pkg_kunena_languages', 'com_kunena_el-GR')");
+return json_encode(array('records' => (int) $db->loadResult(), 'files' => count(array_filter($files, 'is_file'))));
+PHP
+                );
+                result('langpack', isset($x['records']) && $x['records'] == 2 && $x['files'] == 9, json_encode($x));
+                break;
+            case 'langcheck':
+                $x = kexecJson(
+                    <<<'PHP'
+$db = JFactory::getDbo();
+$db->setQuery("SELECT COUNT(*) FROM #__extensions WHERE element IN ('pkg_kunena_languages', 'com_kunena_el-GR')");
+$records = (int) $db->loadResult();
+$gone = array(JPATH_SITE . '/language/el-GR/el-GR.com_kunena.ini', JPATH_SITE . '/language/el-GR/el-GR.com_kunena.templates.ini',
+    JPATH_SITE . '/language/el-GR/el-GR.kunena_tmpl_crypsis.ini', JPATH_SITE . '/language/en-GB/en-GB.com_kunena.ini',
+    JPATH_ADMINISTRATOR . '/language/el-GR/el-GR.com_kunena.sys.ini', JPATH_ADMINISTRATOR . '/language/el-GR/el-GR.plg_kunena_joomla.sys.ini',
+    JPATH_ADMINISTRATOR . '/language/en-GB/en-GB.com_kunena.views.ini',
+    JPATH_MANIFESTS . '/packages/pkg_kunena_languages.xml', JPATH_MANIFESTS . '/files/com_kunena_el-GR.xml', JPATH_MANIFESTS . '/packages/kunena_languages', JPATH_MANIFESTS . '/files/com_kunena_el-GR');
+$kept = array(JPATH_SITE . '/language/el-GR/el-GR.mod_kunenalatest.ini', JPATH_SITE . '/language/el-GR/el-GR.kunena_tmpl_acme.ini',
+    JPATH_SITE . '/language/en-GB/en-GB.mod_kunenalatest.ini');
+// Meela's own Greek file, read the way Kunena loads it
+$lang = new JLanguage('el-GR');
+$lang->load('com_kunena', JPATH_SITE . '/components/com_kunena', 'el-GR', true, false);
+$result = array('records' => $records, 'left' => array_values(array_filter($gone, 'file_exists')),
+    'missing' => array_values(array_filter($kept, function ($f) { return !file_exists($f); })), 'greek' => $lang->_('COM_KUNENA_CATEGORY'));
+foreach (array_slice($kept, 0, 2) as $f) { @unlink($f); }
+return json_encode($result);
+PHP
+                );
+                $ok = isset($x['records']) && $x['records'] === 0 && $x['left'] === array() && $x['missing'] === array() && $x['greek'] === 'Κατηγορία';
+                result('langcheck', $ok, json_encode($x, JSON_UNESCAPED_UNICODE));
+                break;
             case 'extras':
                 // The modules and plugins kunena.org used to distribute separately, now in the package
                 $x = kexecJson(

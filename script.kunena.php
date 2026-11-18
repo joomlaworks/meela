@@ -296,8 +296,15 @@ class Com_KunenaInstallerScript
         // 5.3.0: integrations no longer shipped (the installer uninstalls the plugins themselves)
         $deadFiles[] = $sitePath . '/jomsocial_rule.xml';
 
-        foreach (['alphauserpoints', 'altauserpoints', 'community', 'easyblog', 'easyprofile', 'easysocial', 'uddeim'] as $integration) {
-            $deadFiles[] = JPATH_ADMINISTRATOR . '/components/com_kunena/language/en-GB/en-GB.plg_kunena_' . $integration . '.sys.ini';
+        // 5.5.0: Community Builder's too; their translations in every language
+        foreach (['alphauserpoints', 'altauserpoints', 'community', 'comprofiler', 'easyblog', 'easyprofile', 'easysocial', 'uddeim'] as $integration) {
+            foreach ((array) glob(JPATH_ADMINISTRATOR . '/components/com_kunena/language/*/*.plg_kunena_' . $integration . '.sys.ini') as $file) {
+                $deadFiles[] = $file;
+            }
+        }
+
+        if (is_dir(JPATH_ADMINISTRATOR . '/components/com_kunena/install/plugins/plg_kunena_comprofiler')) {
+            Folder::delete(JPATH_ADMINISTRATOR . '/components/com_kunena/install/plugins/plg_kunena_comprofiler');
         }
 
         foreach (['crypsis', 'crypsisb3', 'crypsisb4'] as $template) {
@@ -382,6 +389,9 @@ class Com_KunenaInstallerScript
 
         // Migrate from the legacy "pkg_kunena" + "files_kunena_media" layout.
         $this->removeLegacyPackage();
+
+        // Kunena's separate language pack, which would hide Meela's own translations.
+        $this->removeLegacyLanguagePack();
 
         if (version_compare(JVERSION, '4.0', '<')) {
             $this->convertTablesToUtf8mb4();
@@ -598,6 +608,84 @@ class Com_KunenaInstallerScript
                         ->delete($db->quoteName($table))
                         ->where($db->quoteName('update_site_id') . ' IN (' . $idList . ')')
                 )->execute();
+            }
+        }
+    }
+
+    /**
+     * Kunena's language pack (pkg_kunena_languages, one "file" extension com_kunena_xx-XX per language) put its
+     * translations into the site's and the administrator's language folders, which Joomla reads before the component's
+     * own: they would hide Meela's translations (and, for en-GB, its new strings). Drop the pack's records and manifests
+     * and delete its files. The files Meela's own modules and the Search and Content plugins install there stay.
+     *
+     * @return void
+     * @since 5.5.0
+     */
+    protected function removeLegacyLanguagePack()
+    {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['extension_id', 'type', 'element']))
+            ->from($db->quoteName('#__extensions'))
+            ->where('((' . $db->quoteName('type') . ' = ' . $db->quote('package') . ' AND ' . $db->quoteName('element') . ' = ' . $db->quote('pkg_kunena_languages') . ')'
+                . ' OR (' . $db->quoteName('type') . ' = ' . $db->quote('file') . ' AND ' . $db->quoteName('element') . ' LIKE ' . $db->quote('com_kunena_%') . '))');
+        $rows = array_filter((array) $db->setQuery($query)->loadObjectList(), function ($row) {
+            return $row->type === 'package' || preg_match('/^com_kunena_[a-z]{2,3}-[A-Z]{2}$/', (string) $row->element);
+        });
+
+        if ($rows) {
+            $ids = implode(',', array_map(function ($row) {
+                return (int) $row->extension_id;
+            }, $rows));
+
+            foreach (['#__update_sites_extensions', '#__updates', '#__extensions'] as $table) {
+                $db->setQuery(
+                    $db->getQuery(true)
+                        ->delete($db->quoteName($table))
+                        ->where($db->quoteName('extension_id') . ' IN (' . $ids . ')')
+                )->execute();
+            }
+
+            foreach ($rows as $row) {
+                $element = preg_replace('/[^A-Za-z0-9_\-]/', '', (string) $row->element);
+                $folder  = $row->type === 'package' ? 'packages' : 'files';
+
+                $this->deleteFile(JPATH_MANIFESTS . '/' . $folder . '/' . $element . '.xml');
+
+                // A package's installer script lives in a folder named after the package (without "pkg_"), a file
+                // extension's in one named after the extension
+                $scriptFolder = JPATH_MANIFESTS . '/' . $folder . '/' . ($row->type === 'package' ? substr($element, 4) : $element);
+
+                if (is_dir($scriptFolder)) {
+                    Folder::delete($scriptFolder);
+                }
+            }
+        }
+
+        // The pack's files (exactly the names it shipped), also when its records are gone. Not touched: the files of
+        // mod_kunenalatest/login/search/stats, plg_search_kunena and plg_content_kunenadiscuss (Meela installs them
+        // there) and third-party templates' and integrations' own.
+        $pattern = '/^[a-z]{2,3}-[A-Z]{2}\.(com_kunena(\.(controllers|libraries|models|sys|templates|views))?'
+            . '|kunena_tmpl_(blue_eagle5|crypsis|crypsisb3|crypsisb4)|mod_kunenamenu(\.sys)?'
+            . '|plg_kunena_(alphauserpoints|altauserpoints|community|comprofiler|easyblog|easyprofile|easysocial|finder|gravatar|joomla|kunena|uddeim)\.sys'
+            . '|plg_(finder|quickicon|system)_kunena\.sys)\.ini$/';
+
+        foreach ([JPATH_SITE . '/language', JPATH_ADMINISTRATOR . '/language'] as $root) {
+            if (!is_dir($root)) {
+                continue;
+            }
+
+            foreach (Folder::folders($root) as $tag) {
+                if (!preg_match('/^[a-z]{2,3}-[A-Z]{2}$/', $tag)) {
+                    continue;
+                }
+
+                foreach ((array) @scandir($root . '/' . $tag) as $file) {
+                    if (strpos($file, $tag . '.') === 0 && preg_match($pattern, $file)) {
+                        $this->deleteFile($root . '/' . $tag . '/' . $file);
+                    }
+                }
             }
         }
     }

@@ -3,37 +3,28 @@
 All notable changes to Meela (called Kunena Fork up to 5.4), the continuation of Kunena, are documented here. For a short overview see [README.md](README.md); for
 how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md).
 
-## [Unreleased]
-
-### Added
-
-- **Every language up to date** (JoomlaWorks Ltd.): Meela's 53 languages besides English get the strings Meela added
-  or reworded since Kunena 5.2.14 (464 per language: Baldrick AI, Maintenance, Blackadder, usernames and names, structured
-  data and sitemaps, the installer's and the administrator's new texts), translated with Claude (Haiku for the widely
-  used languages, Sonnet for the others) from each language's own existing terms, so new and old strings use the same
-  words and form of address. Every string was checked for placeholders, HTML tags and attributes, quotes and product
-  names, and every file is parsed the way Joomla 3.x UTD reads it. Native speakers' corrections are welcome, especially
-  for Sorani Kurdish, Khmer and Uyghur.
-- **The frontend in every language**: the translations of the forum's own pages (`components/com_kunena/language/`,
-  about 1,470 strings per language), which Kunena shipped in a separate language pack, are now part of the package,
-  taken from the official Kunena 5.2.14 language pack. The Blackadder template and the Baldrick AI, Console and
-  Quick Icon plugins get language files of their own too.
-- Strings whose only change was "Kunena" becoming "Meela" keep their existing translation with the new name.
+## [5.5.0] - 2026-11-18
 
 ### Changed
 
 - Translation files follow the English files' order and layout; strings that no longer exist in English (mostly the
   old sample data's ranks and texts) are removed, and the deprecated `"_QQ_"` quotes are written as `\"`: Joomla 3.x
   UTD reads language files in raw mode, where `_QQ_` used to appear on screen.
-- Sites which installed Kunena's separate language pack keep its files in the site's `language/` folder, which Joomla
-  reads first: they show the old translations, with the new strings in English. Uninstalling that pack (Extensions >
-  Manage, type "File", "Kunena Language") brings Meela's own translations in.
+- **Kunena's old language pack is removed on update**: it put its files into the site's and the administrator's
+  `language/` folders, which Joomla reads before the component's own, so a site that had installed it kept the old
+  translations (and, for English, Kunena 5.2's strings without Meela's new ones). The installer now deletes the pack's
+  records (`pkg_kunena_languages`, `com_kunena_xx-XX`), manifests and exactly the files it shipped; the language files
+  of Meela's modules and of the Search and Content plugins, and those of third-party templates and integrations, stay.
+- **The Community Builder integration plugin is removed** (`install/plugins/plg_kunena_comprofiler`, its language
+  files in every language): the installation wizard no longer installs it and uninstalls it from sites upgrading, as
+  5.3.0 did with the AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM plugins (whose language
+  files in languages other than English are now deleted too). Meela bundles no third-party integrations; new plugins
+  are meant to extend it instead.
+- **Errors in the old translations corrected** where the new strings' terms exposed them, e.g. Lithuanian "Trash" was
+  "spam", Slovenian "Unpublished" was "cancel", Bosnian "Moderator" was "editor", Chinese (Simplified) "Username" was
+  "name", Arabic "Profile" was "my library", plus misspellings in Afrikaans, Romanian, Albanian and Greek and wrong
+  plurals in Ukrainian and Norwegian.
 - Baldrick AI's spam setting explains when an e-mail is sent more clearly.
-
-## [5.5.0] - 2026-11-18
-
-### Changed
-
 - **Kunena Fork is now Meela** (from the Greek "μίλα", "speak"; repository github.com/joomlaworks/meela). Only the name
   users see changes:
   - language strings in every language: "Kunena" becomes "Meela" where it names the product. Kept: the original
@@ -74,6 +65,18 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
 
 ### Added
 
+- **Every language up to date** (JoomlaWorks Ltd.): Meela's 53 languages besides English get the strings Meela added
+  or reworded since Kunena 5.2.14 (464 per language: Baldrick AI, Maintenance, Blackadder, usernames and names, structured
+  data and sitemaps, the installer's and the administrator's new texts), translated with Claude (Haiku for the widely
+  used languages, Sonnet for the others) from each language's own existing terms, so new and old strings use the same
+  words and form of address. Every string was checked for placeholders, HTML tags and attributes, quotes and product
+  names, and every file is parsed the way Joomla 3.x UTD reads it. Native speakers' corrections are welcome, especially
+  for Sorani Kurdish, Khmer and Uyghur.
+- **The frontend in every language**: the translations of the forum's own pages (`components/com_kunena/language/`,
+  about 1,470 strings per language), which Kunena shipped in a separate language pack, are now part of the package,
+  taken from the official Kunena 5.2.14 language pack. The Blackadder template and the Baldrick AI, Console and
+  Quick Icon plugins get language files of their own too.
+- Strings whose only change was "Kunena" becoming "Meela" keep their existing translation with the new name.
 - **Sitemaps:** `profiles.xml` (`profiles-2.xml`... past 50,000) lists the profiles of members with posts, an enabled
   account and no ban in force, when guests may see profiles; it is removed when they no longer may.
 - **Usernames and names with common characters only** (JoomlaWorks Ltd.): Configuration > Members > Usernames & Names,
@@ -130,9 +133,16 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
 ### Test results (5.5.0)
 
 - PHP lint: 0 errors on PHP 7.1, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4 and 8.5. PHP CS Fixer (@PSR12): 0 files to fix.
-- Class-load check against Joomla 3.x UTD 3.18 on PHP 8.5: 368 class files, 0 messages.
-- End-to-end on Joomla 3.x UTD 3.18, PHP 8.5, on SQLite 3.45 and PostgreSQL 16: 161 and 20
-  scenarios pass, no failed SQL queries, no PHP messages from Kunena code. The new
+- Class-load check against Joomla 3.x UTD 3.18 on PHP 8.5: 361 class files (the Community Builder plugin's are gone),
+  0 messages.
+- End-to-end on Joomla 3.x UTD 3.18, PHP 8.5, on SQLite, PostgreSQL 16 (both drivers), MariaDB 11.4 and MySQL 8.4: 164
+  and 20 scenarios pass on each, no failed SQL queries, no PHP messages from Kunena code. The new `langpack` and
+  `langcheck` scenarios plant Kunena's language pack (records, manifests, files in the site's and the administrator's
+  language folders, English included), reinstall the package and check that all of it is gone while Meela's module
+  files and a third-party template's stay, and that Joomla loads Meela's Greek strings. `tests/e2e/upgrade.sh` installs
+  the real Kunena 5.2.14 language pack (`LEGACY_LANGPACK`) through the administrator before upgrading and checks the
+  same, and that no third-party integration plugin is left. Every translation file (2,413 new or changed) is parsed
+  the way Joomla 3.x UTD parses it, with no difference from the lines written. The new
   `profiles` scenario fills a member's website, social account, location and signature with spam and checks that
   guests see none of it on the profile or under the member's posts, that the member sees all of it when logged in, and
   that a profile without posts is `noindex`; the `sitemap` scenario checks `profiles.xml` against the members with

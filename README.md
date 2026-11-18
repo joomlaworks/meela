@@ -49,6 +49,9 @@ Summary of changes:
 - **Usernames and names with common characters only** (Configuration > Members, on by default): usernames with letters A-Z, digits and dashes, names with letters of any alphabet, digits, spaces and `. , ' - & ( )`, both starting with a letter or a digit; checked on registration and profile changes. **Maintenance > Normalise Usernames & Names** (and `kunena:users:normalize`) fixes existing accounts, e.g. `__carletto75__` becomes `carletto75` and "Daniel Correa ✔" becomes "Daniel Correa"
 - **XML sitemaps:** the profiles of members with posts (`profiles.xml`), when guests may see profiles
 - With "Allow Guests to see User Profiles" on, threads' structured data names each author's profile (`author.url`), which Google Search Console asks for
+- **Every language up to date:** the strings Meela added since Kunena 5.2 are translated into all 53 other languages, and the forum's own pages are translated too (Kunena shipped those in a separate language pack, now part of the package). Errors in the old translations are corrected where the new strings exposed them
+- **Kunena's old language pack is removed on update:** its files would hide Meela's translations (and, in English, its new strings)
+- **The Community Builder integration is removed** (uninstalled from existing sites when upgrading), like the other third-party integrations in 5.3.0
 
 ## Version 5.4.0 - released November 17th, 2026
 Summary of changes:
@@ -115,7 +118,7 @@ Every change is described in detail in [CHANGELOG.md](CHANGELOG.md).
 
 **Removed:**
 - "Powered by Kunena" credits and the credits page
-- The third-party integration plugins for AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM (removed from existing sites when upgrading); Community Builder's is kept
+- The third-party integration plugins for AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM (removed from existing sites when upgrading); Community Builder's followed in 5.5.0
 - The WysiBB editor and other unused JavaScript
 - The kunena.org update server (it only offers Kunena 5.2.x), replaced by Meela's own: updates now come through Joomla's updater
 
@@ -125,7 +128,7 @@ Every change is described in detail in [CHANGELOG.md](CHANGELOG.md).
 2. In Joomla's administrator, go to **Extensions > Install > Upload Package File** and upload the ZIP as it is.
 3. You are taken to Meela's installation wizard, which creates (or upgrades) the forum's database tables.
 
-One package installs everything: the Meela component, its media files, the Meela library, the System - Meela, Quick Icon - Meela and Console - Meela plugins, and the extensions kunena.org used to distribute separately: the Kunena Latest, Login, Search and Stats modules and the Content - Kunena Discuss and Search - Kunena plugins, and the new Kunena - Baldrick AI plugin. New plugins are enabled; plugins you already had keep their state (e.g. a disabled Kunena Discuss stays disabled). Modules are installed but not published - add them to your template's positions in Extensions > Modules.
+One package installs everything: the Meela component, its media files, the Meela library, the System - Meela, Quick Icon - Meela and Console - Meela plugins, and the extensions kunena.org used to distribute separately: the Meela Latest, Login, Search and Statistics modules and the Content - Meela Discuss and Search - Meela plugins, and the new Meela - Baldrick AI plugin. New plugins are enabled; plugins you already had keep their state (e.g. a disabled Meela Discuss stays disabled). Modules are installed but not published - add them to your template's positions in Extensions > Modules.
 
 The command line works too: `php cli/joomla.php extension:install --path=kunena.zip` (the wizard then runs the first time you open Meela in the administrator).
 
@@ -179,7 +182,7 @@ On Joomla 3.x UTD, Meela's tools also run from the command line (`php cli/joomla
 ## NOTES
 
 - Meela's PHP support is limited by the Joomla core it runs on: Joomla 3.9 does not support PHP 8 and Joomla 3.10 supports only up to PHP 8.0. For proper support for PHP 7.1 to 8.5 just do yourself a favour and use [Joomla 3.x UTD](https://j3xutd.joomlaworks.net) - it's better, faster, more secure & current.
-- Of the third-party integration plugins Kunena used to bundle, only Community Builder's is kept (updated for security, only tested on MySQL); the plugins for AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM are removed from existing sites when upgrading.
+- Meela bundles none of the third-party integration plugins Kunena used to: the plugins for AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog, UddeIM and (since 5.5.0) Community Builder are removed from existing sites when upgrading. New plugins will extend Meela instead (see the roadmap on the website).
 - Updates come through Joomla's own updater (**System > Update > Extensions**): Meela registers its update server (`https://joomlaworks.github.io/meela/update.xml`) for every Joomla 3.x from 3.9 on, Joomla 3.x UTD's future releases included. The official Kunena update server is no longer registered (it only offers Kunena 5.2.x).
 
 ## FOR DEVELOPERS

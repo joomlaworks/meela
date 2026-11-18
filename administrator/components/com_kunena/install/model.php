@@ -990,12 +990,11 @@ class KunenaModelInstall extends \Joomla\CMS\MVC\Model\BaseDatabaseModel
     public function stepPlugins()
     {
         $this->installPlugin('plugins/plg_finder_kunena', 'finder', 'kunena', false, 1);
-        $this->installPlugin('plugins/plg_kunena_comprofiler', 'kunena', 'comprofiler', false, 4);
         $this->installPlugin('plugins/plg_kunena_gravatar', 'kunena', 'gravatar', false, 7);
 
         // 5.3.0: the AltaUserPoints, JomSocial, EasyProfile, EasySocial, EasyBlog and UddeIM integrations are no longer
-        // part of Kunena (Community Builder's stays): remove them from sites upgrading
-        foreach (array('altauserpoints', 'community', 'easyprofile', 'easysocial', 'easyblog', 'uddeim') as $integration) {
+        // part of Kunena, 5.5.0: nor is Community Builder's: remove them from sites upgrading
+        foreach (array('altauserpoints', 'community', 'comprofiler', 'easyprofile', 'easysocial', 'easyblog', 'uddeim') as $integration) {
             $this->uninstallPlugin('kunena', $integration);
         }
 

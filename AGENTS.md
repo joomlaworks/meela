@@ -93,6 +93,9 @@ JS-MIGRATION.md                         plan for rewriting Kunena's JavaScript w
    - `removeLegacyPackage()`: drops the 5.2.x `pkg_kunena` (package) and `kunena_media` (file) extension records,
      their manifests and script folders in `administrator/manifests/`, detaches children (`package_id = 0`) and
      removes the `update.kunena.org` update sites - without deleting any file;
+   - `removeLegacyLanguagePack()`: drops Kunena's separate language pack (`pkg_kunena_languages`, `com_kunena_xx-XX`)
+     and deletes exactly the files it put into the site's and the administrator's `language/` folders (Joomla reads
+     those before the component's own translations);
    - utf8mb4 index conversion (MySQL only), cache clean-up;
    - in the administrator only, sets the installer's `redirect_url` to `index.php?option=com_kunena&view=install`.
 4. `uninstall()`: `KunenaModelInstall::uninstall()` removes the library, plugins, modules and menu items (tables are kept;
@@ -450,7 +453,8 @@ tests/e2e/containers.sh down
   connection, dry run, answer with related threads and relative links, request for details with translation, canned
   reply, not-a-question, spam thread and spam reply unpublished, revived threads, staff replies, retry on overload,
   refusal fallback, automatic background processing, administrator page, CLI, client features against the official
-  APIs), every Maintenance job through its JSON task (recounts, user synchronisation, lifetime bans deleted through
+  APIs), Kunena's old language pack (records, manifests, files in the site's language folders) removed by a reinstall while
+  Meela's modules' and third-party files stay, every Maintenance job through its JSON task (recounts, user synchronisation, lifetime bans deleted through
   Joomla while a pending registration stays, prune, IP cleanup, RE: prefixes stripped, refusals), the old tool pages
   redirecting to Maintenance, Diagnostics fixes, uninstall, reinstall over existing tables. Single steps:
   `php tests/e2e/run.php <db> install,wizard,post`.

@@ -14,6 +14,15 @@ if [ -n "$LEGACY_EXTRAS" ]; then
    php cli/joomla.php extension:disable plg_content_kunenadiscuss -n -q)
   echo "-- legacy extras: Kunena Discuss (disabled) and Latest module installed"
 fi
+# Optional: LEGACY_LANGPACK = Kunena's language pack ZIP (pkg_kunena_languages_v5.2.14_2022-12-14.zip): it installs the
+# site's languages (en-GB on a test site) into Joomla's language folders, where they would hide Meela's own strings
+if [ -n "$LEGACY_LANGPACK" ]; then
+  # Through the administrator, like a site owner: the pack's installer needs Kunena's classes loaded
+  KUNENA_ZIP=$LEGACY_LANGPACK KUNENA_ALLOW_PHP_MESSAGES=1 php run.php mariadb install >/dev/null 2>&1
+  LN=$(ls "$SITES"/mariadb/language/en-GB/en-GB.com_kunena*.ini 2>/dev/null | wc -l)
+  echo "-- legacy language pack installed: $LN site files"
+  [ "$LN" -gt 0 ] || { echo "legacy language pack NOT installed"; LPRC=1; }
+fi
 : > "$SITES/mariadb/php_errors.log"
 echo "-- upgrade to this repository (keeps Crypsis: 5.2 never saved its configuration)"; KUNENA_EXPECT_TEMPLATE=crypsis php run.php mariadb install,wizard,admin,site,post,recent,profile,search,moderate 2>&1 | grep -E "FAIL|passed|messages from Kunena|^PHP|failed"; rc=${PIPESTATUS[0]}
 P=$(grep -o "dbprefix = '[^']*'" "$SITES/mariadb/configuration.php" | cut -d"'" -f2)
@@ -29,9 +38,15 @@ case "$B" in "baldrick=1 tables=3 ") echo "baldrick after upgrade: $B";; *) echo
 # A 5.2 site that never saved Kunena's configuration ran on Crypsis: the upgrade saves it, Blackadder is for new sites
 T=$(docker exec $MARIADB_CONTAINER mariadb -ukunena -pkunena kunena -N -e "SELECT JSON_VALUE(params,'$.template') FROM ${P}kunena_configuration WHERE id=1" 2>/dev/null)
 [ "$T" = "crypsis" ] && echo "template after upgrade: crypsis (kept)" || { echo "template after upgrade WRONG: $T"; rc=1; }
-# The third-party integration plugins of 5.2 are uninstalled by the wizard, except Community Builder's
+# The third-party integration plugins of 5.2 are uninstalled by the wizard (Community Builder's too, since 5.5.0)
 I=$(docker exec $MARIADB_CONTAINER mariadb -ukunena -pkunena kunena -N -e "SELECT element FROM ${P}extensions WHERE type='plugin' AND folder='kunena' AND element IN ('altauserpoints','community','easyprofile','easysocial','easyblog','uddeim','comprofiler') ORDER BY element" 2>/dev/null | tr '\n' ' ')
-[ "$I" = "comprofiler " ] && echo "integration plugins after upgrade: only comprofiler" || { echo "integration plugins after upgrade WRONG: $I"; rc=1; }
+[ -z "$(echo $I)" ] && echo "integration plugins after upgrade: none" || { echo "integration plugins after upgrade WRONG: $I"; rc=1; }
 L=$(ls -d "$SITES"/mariadb/administrator/manifests/packages/*kunena* "$SITES"/mariadb/administrator/manifests/files/*kunena* 2>/dev/null)
 [ -z "$L" ] && echo "legacy package records/manifests: removed" || { echo "legacy manifests LEFT: $L"; rc=1; }
+if [ -n "$LEGACY_LANGPACK" ]; then
+  LP=$(ls "$SITES"/mariadb/language/*/*.com_kunena*.ini "$SITES"/mariadb/administrator/language/*/*.com_kunena*.ini 2>/dev/null)
+  LR=$(docker exec $MARIADB_CONTAINER mariadb -ukunena -pkunena kunena -N -e "SELECT COUNT(*) FROM ${P}extensions WHERE element='pkg_kunena_languages' OR element LIKE 'com_kunena_%'" 2>/dev/null)
+  LM=$(ls "$SITES"/mariadb/language/en-GB/en-GB.mod_kunenalatest.ini 2>/dev/null)
+  [ "${LPRC:-0}" = 0 ] && [ -z "$LP" ] && [ "$LR" = "0" ] && [ -n "$LM" ] && echo "legacy language pack: removed (module languages kept)" || { echo "legacy language pack LEFT: records=$LR files=$LP module=$LM"; rc=1; }
+fi
 exit $rc
