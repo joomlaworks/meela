@@ -18,7 +18,7 @@ $category = $topic->getCategory();
 $author   = $message->getAuthor();
 $isReply  = $message->id != $topic->first_post_id;
 $config   = KunenaFactory::getConfig();
-$name     = $config->username ? $author->username : $author->name;
+$name     = $config->username ? $author->getPublicUsername() : $author->name;
 $me       = isset($this->me) ? $this->me : KunenaUserHelper::getMyself();
 ?>
 <div id="kunena_search_results" class="row-fluid">

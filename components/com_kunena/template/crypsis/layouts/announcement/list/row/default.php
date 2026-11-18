@@ -65,7 +65,7 @@ $announcement = $this->announcement;
 	<?php endif; ?>
 	<td>
 		<?php if (KunenaConfig::getInstance()->username) : ?>
-			<?php echo $this->escape($announcement->getAuthor()->username); ?>
+			<?php echo $this->escape($announcement->getAuthor()->getPublicUsername()); ?>
 		<?php else : ?>
 			<?php echo $this->escape($announcement->getAuthor()->name); ?>
 		<?php endif; ?>

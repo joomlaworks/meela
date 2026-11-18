@@ -345,7 +345,8 @@ Rules:
   enabled and not banned, only with `pubprofile`); same guest-only rules as above; SEF URLs built with the site
   application made current and `$_SERVER` simulated from `live_site` (`--live-site`).
 - Usernames and names (`KunenaUserNormalizer`, Configuration > Members `user_names_strict` / `user_names_leading`, on by
-  default): usernames `[A-Za-z0-9-]`, names letters/digits/spaces and `. , ' ’ - & ( )`, both starting with a letter or
+  default): usernames `[A-Za-z0-9-]` or an e-mail address (`isEmail()`: only lowercased, never shown to others: use
+  `KunenaUser::getPublicUsername()` wherever a username is displayed), names letters/digits/spaces and `. , ' ’ - & ( )`, both starting with a letter or
   digit; enforced by the System - Kunena plugin's `onUserBeforeSave` for new accounts and changed values only. Code that
   creates accounts (sample data, Baldrick AI, tests) must use valid usernames and names.
 - Profiles for guests: what members write about themselves (website, social accounts, location, gender, birthdate,

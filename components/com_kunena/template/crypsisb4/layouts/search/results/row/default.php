@@ -19,7 +19,7 @@ $category             = $topic->getCategory();
 $author               = $message->getAuthor();
 $isReply              = $message->id != $topic->first_post_id;
 $config               = KunenaFactory::getConfig();
-$name                 = $config->username ? $author->username : $author->name;
+$name                 = $config->username ? $author->getPublicUsername() : $author->name;
 $me                   = isset($this->me) ? $this->me : KunenaUserHelper::getMyself();
 $this->ktemplate      = KunenaFactory::getTemplate();
 $subjectlengthmessage = $this->ktemplate->params->get('SubjectLengthMessage', 20);

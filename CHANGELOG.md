@@ -10,6 +10,11 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
 - Translation files follow the English files' order and layout; strings that no longer exist in English (mostly the
   old sample data's ranks and texts) are removed, and the deprecated `"_QQ_"` quotes are written as `\"`: Joomla 3.x
   UTD reads language files in raw mode, where `_QQ_` used to appear on screen.
+- **E-mail addresses as usernames are never shown**: where Meela shows usernames (Configuration "Display User Name"
+  instead of the name, Blackadder's "@username" under the name on profiles, the member list, search results,
+  announcements, @mentions, the member search, profile addresses and the sitemaps), an account whose username is an
+  e-mail address shows its name instead (`KunenaUser::getPublicUsername()`); the member search no longer matches such
+  usernames.
 - **Kunena's old language pack is removed on update**: it put its files into the site's and the administrator's
   `language/` folders, which Joomla reads before the component's own, so a site that had installed it kept the old
   translations (and, for English, Kunena 5.2's strings without Meela's new ones). The installer now deletes the pack's
@@ -81,8 +86,9 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
   account and no ban in force, when guests may see profiles; it is removed when they no longer may.
 - **Usernames and names with common characters only** (JoomlaWorks Ltd.): Configuration > Members > Usernames & Names,
   two settings, both on by default:
-  - "Common characters only": usernames may use ASCII letters, digits and dashes (`[A-Za-z0-9-]`); names may use
-    letters of any alphabet, digits, spaces and `. , ' ’ - & ( )`;
+  - "Common characters only": usernames may use ASCII letters, digits and dashes (`[A-Za-z0-9-]`), or be an e-mail
+    address (sites where members register with their e-mail address only, e.g. through JoomlaWorks' SocialConnect);
+    names may use letters of any alphabet, digits, spaces and `. , ' ’ - & ( )`;
   - "Start with a letter or a digit": no leading `_`, `-`, `.`, `@`... (the trick to appear first in member lists).
   The System - Kunena plugin checks them in `onUserBeforeSave` whenever an account is created or its username or name
   changes (registration, profile edits, the user manager, the command line), with Joomla showing the reason; accounts
@@ -92,8 +98,9 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
   letters transliterated with PHP's intl, Greek as Greeks write it: "Φώτης" -> "Fotis"; iconv or Joomla's
   transliteration otherwise) and spaces in names; leading symbols are removed; usernames shorter than 2 characters get
   the account's ID, empty ones become `user-<id>`; a username another account already has (compared without case)
-  gets `-<id>`. Examples: `__carletto75__` -> `carletto75`, `007.david@gmail.com` -> `007-david-gmail-com`,
-  "Daniel Correa ✔" -> "Daniel Correa". Only `#__users` (and the session's copy of the username) is written, in
+  gets `-<id>`. Usernames which are e-mail addresses are only lowercased (members log in with them), and left alone
+  when another account has the same address in another case. Examples: `__carletto75__` -> `carletto75`,
+  `007.David@Gmail.com` -> `007.david@gmail.com`, "Daniel Correa ✔" -> "Daniel Correa". Only `#__users` (and the session's copy of the username) is written, in
   steps; "Preview" shows the counts and the first 50 changes. Members whose username changes log in with
   the new one (Joomla's "Forgot your username?" sends it to them).
 - Sample Data's accounts use dashes (`maria-lopez`), as the new rules want.

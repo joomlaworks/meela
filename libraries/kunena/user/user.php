@@ -578,7 +578,7 @@ class KunenaUser extends CMSObject
 
         if (!$name) {
             if ($optional_username == 1) {
-                $name = $this->escape($this->username);
+                $name = $this->escape($this->getPublicUsername());
             } elseif ($optional_username == 2) {
                 $name = $this->escape($this->name);
             }
@@ -671,6 +671,19 @@ class KunenaUser extends CMSObject
     }
 
     /**
+     * The username where it is shown to others: the member's name instead when the username is an e-mail address (sites
+     * where members register with their e-mail address only), which must never be published.
+     *
+     * @return  string
+     *
+     * @since 5.5.0
+     */
+    public function getPublicUsername()
+    {
+        return KunenaUserNormalizer::isEmail($this->username) ? (string) $this->name : (string) $this->username;
+    }
+
+    /**
      * Retrieve the username from integration if it's enabled, it's the integration plugin which give the username
      *
      * @param   string $visitorname visitor name
@@ -687,7 +700,7 @@ class KunenaUser extends CMSObject
             if (!$this->userid && !$this->name) {
                 $name = $visitorname;
             } else {
-                $name = $this->_config->username ? $this->username : $this->name;
+                $name = $this->_config->username ? $this->getPublicUsername() : $this->name;
             }
 
             if ($escape) {

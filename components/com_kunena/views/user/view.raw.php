@@ -38,7 +38,7 @@ class KunenaViewUser extends KunenaView
 
             foreach ($users as $user) {
                 if ($this->config->username) {
-                    $response[] = $user->username;
+                    $response[] = $user->getPublicUsername();
                 } else {
                     $response[] = $user->name;
                 }
@@ -77,7 +77,7 @@ class KunenaViewUser extends KunenaView
 
                 $user_obj->id    = $user->id;
                 $user_obj->photo = $user->getAvatarURL();
-                $user_obj->name  = $user->username;
+                $user_obj->name  = $user->getPublicUsername();
 
                 $response[] = $user_obj;
             }

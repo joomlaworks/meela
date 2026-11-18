@@ -222,10 +222,12 @@ JSON data (`--format=json`): `trash` (the counts), `plan` (dry run), `deleted` (
 ### `kunena:users:normalize`
 
 Rewrites the usernames and names of existing accounts that break the rules in Meela > Configuration > Members >
-Usernames & Names (usernames: letters A to Z, digits and dashes; names: letters of any alphabet, digits, spaces and
+Usernames & Names (usernames: letters A to Z, digits and dashes, or an e-mail address; names: letters of any alphabet, digits, spaces and
 `. , ' - & ( )`; both starting with a letter or a digit). Characters that aren't allowed become dashes in usernames
 (accented and Greek letters are written in Latin letters: "Φώτης" becomes "Fotis") and spaces in names, and leading
 symbols are removed. A username another account already has gets the account's ID added (`maria-lopez-1234`).
+Usernames which are e-mail addresses are allowed and only lowercased (`John.Doe@Example.com` becomes
+`john.doe@example.com`), since members log in with them; one is left alone if another account has it in another case.
 
 Only usernames and names change. Members whose username changes must log in with the new one (Joomla's "Forgot your
 username?" sends it to them). Make a backup first and look at `--dry-run`'s list.

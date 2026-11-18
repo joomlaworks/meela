@@ -787,15 +787,18 @@ $db->setQuery("DELETE FROM #__user_usergroup_map WHERE user_id=' . (int) $p['qui
                 result('profile-noposts', $quietNoindex, 'HTTP ' . $guest->code);
                 break;
             case 'usernames':
-                // Usernames: ASCII letters, digits and dashes; names: letters, digits, spaces and . , ' - & ( ); both start
+                // Usernames: ASCII letters, digits and dashes, or an e-mail address (only lowercased); names: letters, digits,
+                // spaces and . , ' - & ( ); both start
                 // with a letter or digit (Configuration > Members, on by default). Normalising existing accounts (Tools and
                 // CLI), and the check on new/changed accounts (System - Kunena plugin, here through Joomla's user manager)
                 $clean = '$db = JFactory::getDbo(); $db->setQuery("SELECT id FROM #__users WHERE email LIKE " . $db->quote("%@usernames.invalid"));
 foreach ($db->loadColumn() as $old) { foreach (array("#__user_usergroup_map" => "user_id", "#__users" => "id", "#__kunena_users" => "userid") as $t => $c) { $db->setQuery("DELETE FROM " . $t . " WHERE " . $c . "=" . (int) $old)->execute(); } }';
                 $setup = kexecJson($clean . '
 $ids = array();
-foreach (array("a" => array("__bad_user__", "Bad Name \u{2714}"), "b" => array("007.david@gmail.com", "David"), "c" => array("collide.me", "_Collide"), "d" => array("collide-me", "Collide Me"), "e" => array("\u{03a6}\u{03ce}\u{03c4}\u{03b7}\u{03c2}", "\u{03a6}\u{03ce}\u{03c4}\u{03b7}\u{03c2} \u{0395}\u{03c5}\u{03b1}\u{03b3}\u{03b3}\u{03ad}\u{03bb}\u{03bf}\u{03c5}")) as $k => $v) {
+foreach (array("a" => array("__bad_user__", "Bad Name \u{2714}"), "b" => array("007.David@Gmail.com", "David"), "p" => array("already@example.com", "Already Lower"), "q" => array("Already@Example.com", "Taken In Lowercase"), "c" => array("collide.me", "_Collide"), "d" => array("collide-me", "Collide Me"), "e" => array("\u{03a6}\u{03ce}\u{03c4}\u{03b7}\u{03c2}", "\u{03a6}\u{03ce}\u{03c4}\u{03b7}\u{03c2} \u{0395}\u{03c5}\u{03b1}\u{03b3}\u{03b3}\u{03ad}\u{03bb}\u{03bf}\u{03c5}")) as $k => $v) {
   $u = (object) array("name" => $v[1], "username" => $v[0], "email" => "u-" . $k . "@usernames.invalid", "password" => "", "block" => 0, "sendEmail" => 0, "registerDate" => JFactory::getDate()->toSql(), "lastvisitDate" => $db->getNullDate(), "activation" => "", "params" => "{}", "lastResetTime" => $db->getNullDate(), "resetCount" => 0, "otpKey" => "", "otep" => "", "requireReset" => 0);
+  // "q" differs from "p" only in case: possible on PostgreSQL only (MySQL, MariaDB and SQLite have a unique index on usernames which ignores case)
+  if ($k === "q" && !KunenaDatabaseHelper::isPostgresql()) { continue; }
   $db->insertObject("#__users", $u, "id"); $ids[$k] = (int) $u->id;
 }
 return json_encode(array("ids" => $ids, "counts" => KunenaUserNormalizer::count()));');
@@ -811,7 +814,9 @@ return json_encode(array("ids" => $ids, "counts" => KunenaUserNormalizer::count(
                 $dryIds = array_map(function ($r) {
                     return (int) $r['id'];
                 }, isset($dry['data']['changes']) ? $dry['data']['changes'] : array());
-                $ok = count($ids) == 5 && $setup['counts']['accounts'] >= 4 && $state() == $before && !array_diff(array($ids['a'], $ids['b'], $ids['c'], $ids['e']), $dryIds) && !in_array($ids['d'], $dryIds);
+                $hasQ = isset($ids['q']);
+                $ok = count($ids) == ($hasQ ? 7 : 6) && $setup['counts']['accounts'] >= 4 && $state() == $before && !array_diff(array($ids['a'], $ids['b'], $ids['c'], $ids['e']), $dryIds)
+                    && !array_intersect(array($ids['d'], $ids['p'], $hasQ ? $ids['q'] : 0), $dryIds);
                 result('names-dryrun', $ok, 'counts=' . json_encode(isset($setup['counts']) ? $setup['counts'] : $setup) . ' dry=' . json_encode($dryIds));
                 // Kunena > Maintenance: the preview (nothing written), then the job in steps
                 $preview = maintenance('names_preview');
@@ -824,13 +829,19 @@ return json_encode(array("ids" => $ids, "counts" => KunenaUserNormalizer::count(
                 $left = kexecJson('return json_encode(KunenaUserNormalizer::count());');
                 $want = array(
                     $ids['a'] => array('bad-user', 'Bad Name'),
-                    $ids['b'] => array('007-david-gmail-com', 'David'),
+                    $ids['b'] => array('007.david@gmail.com', 'David'),
+                    $ids['p'] => array('already@example.com', 'Already Lower'),
                     $ids['c'] => array('collide-me-' . $ids['c'], 'Collide'),
                     $ids['d'] => array('collide-me', 'Collide Me'),
                     $ids['e'] => array('Fotis', $before[$ids['e']][1]),
                 );
-                $ok = $last && !empty($last['done']) && $after == $want && $left['accounts'] === 0;
-                result('names-normalize', $ok, 'last=' . json_encode($last) . ' after=' . json_encode($after, JSON_UNESCAPED_UNICODE) . ' left=' . json_encode($left));
+                // E-mail usernames are never shown: the member's name instead
+                $public = kexecJson('return json_encode(array(KunenaUserHelper::get(' . (int) $ids['b'] . ')->getPublicUsername(), KunenaUserHelper::get(' . (int) $ids['a'] . ')->getPublicUsername()));');
+                if ($hasQ) {
+                    $want[$ids['q']] = array('Already@Example.com', 'Taken In Lowercase');
+                }
+                $ok = $last && !empty($last['done']) && $after == $want && $left['accounts'] === 0 && $public === array('David', 'bad-user');
+                result('names-normalize', $ok, 'last=' . json_encode($last) . ' after=' . json_encode($after, JSON_UNESCAPED_UNICODE) . ' left=' . json_encode($left) . ' public=' . json_encode($public));
                 // New accounts through Joomla's user manager: refused with Kunena's message, accepted when valid
                 $form = function ($username, $email) use ($admin) {
                     $page = $admin->get('administrator/index.php?option=com_users&task=user.add');
@@ -841,8 +852,9 @@ return json_encode(array("ids" => $ids, "counts" => KunenaUserNormalizer::count(
                 };
                 $refused = $form('bad.user', 'u-f@usernames.invalid');
                 $accepted = $form('good-user', 'u-g@usernames.invalid');
-                $made = kexecJson('$db = JFactory::getDbo(); $db->setQuery("SELECT username FROM #__users WHERE email LIKE " . $db->quote("%@usernames.invalid") . " AND email IN (" . $db->quote("u-f@usernames.invalid") . "," . $db->quote("u-g@usernames.invalid") . ")"); return json_encode($db->loadColumn());');
-                $ok = stripos($refused, 'Usernames may only contain') !== false && $made == array('good-user');
+                $accepted = $form('Member@Example.org', 'u-m@usernames.invalid');
+                $made = kexecJson('$db = JFactory::getDbo(); $db->setQuery("SELECT username FROM #__users WHERE email LIKE " . $db->quote("%@usernames.invalid") . " AND email IN (" . $db->quote("u-f@usernames.invalid") . "," . $db->quote("u-g@usernames.invalid") . "," . $db->quote("u-m@usernames.invalid") . ")"); return json_encode($db->loadColumn());');
+                $ok = stripos($refused, 'Usernames may only contain') !== false && is_array($made) && count($made) == 2 && in_array('good-user', $made, true) && in_array('Member@Example.org', $made, true);
                 result('names-register', $ok, 'refusedMsg=' . (int) (stripos($refused, 'Usernames may only contain') !== false) . ' made=' . json_encode($made));
                 kexecJson($clean . ' return json_encode(true);');
                 break;

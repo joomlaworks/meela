@@ -128,7 +128,9 @@ class KunenaModelUser extends KunenaModel
             $db = Factory::getDBO();
 
             if ($this->config->username) {
-                $where[] = "u.username LIKE '%{$db->escape($search)}%'";
+                // Usernames which are e-mail addresses are never searched (nor shown): members find each other by name
+                $where[] = "(u.username LIKE '%{$db->escape($search)}%' AND u.username NOT LIKE '%@%')";
+                $where[] = "u.name LIKE '%{$db->escape($search)}%'";
             } else {
                 $where[] = "u.name LIKE '%{$db->escape($search)}%'";
             }

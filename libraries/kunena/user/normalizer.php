@@ -20,7 +20,8 @@ use Joomla\CMS\Language\Text;
  * The rules for usernames and names (Kunena > Configuration > Members), and the normalisation of existing accounts
  * (Kunena > Maintenance > Normalise Usernames & Names, and kunena:users:normalize):
  *
- * - usernames: ASCII letters, digits and dashes (user_names_strict);
+ * - usernames: ASCII letters, digits and dashes (user_names_strict), or an e-mail address (sites where members register
+ *   with their e-mail address only, e.g. through SocialConnect: normalisation only lowercases those);
  * - names: letters of any alphabet, digits, spaces and . , ' ’ - & ( ) (user_names_strict);
  * - both start with a letter or a digit (user_names_leading).
  *
@@ -97,6 +98,11 @@ abstract class KunenaUserNormalizer
     {
         $username = (string) $username;
 
+        // Members who log in with their e-mail address (any case: normalisation lowercases it)
+        if (static::isEmail($username)) {
+            return null;
+        }
+
         if (static::isStrict() && !preg_match('/^[A-Za-z0-9-]+$/', $username)) {
             return Text::_('COM_KUNENA_USERNAMES_ERROR_USERNAME_CHARS');
         }
@@ -133,8 +139,9 @@ abstract class KunenaUserNormalizer
     /**
      * A username which follows the rules, made from the current one (not checked for uniqueness: see unique()).
      *
-     * "Fotis_Evangelou" -> "Fotis-Evangelou", "007.david@gmail.com" -> "007-david-gmail-com", "Φώτης" -> "Fotis"
-     * (where PHP's intl or iconv can transliterate), "__x__" -> "x-<id>" (too short), "@@@" -> "user-<id>".
+     * "Fotis_Evangelou" -> "Fotis-Evangelou", "Φώτης" -> "Fotis" (where PHP's intl or iconv can transliterate), "__x__"
+     * -> "x-<id>" (too short), "@@@" -> "user-<id>". An e-mail address stays one, lowercased ("John.Doe@Example.com" ->
+     * "john.doe@example.com"): members log in with it.
      *
      * @param   string   $username  Current username
      * @param   integer  $userid    The account's id (for usernames which would be empty or too short)
@@ -146,6 +153,10 @@ abstract class KunenaUserNormalizer
     public static function normalizeUsername($username, $userid)
     {
         $username = trim((string) $username);
+
+        if (static::isEmail($username)) {
+            return strtolower($username);
+        }
 
         if (static::isStrict()) {
             $username = trim(preg_replace('/[^A-Za-z0-9]+/', '-', static::ascii($username)), '-');
@@ -259,7 +270,16 @@ abstract class KunenaUserNormalizer
 
             foreach ($rows as $row) {
                 $lastId      = (int) $row->id;
-                $newUsername = static::usernameError($row->username) === null ? null : static::normalizeUsername($row->username, $row->id);
+
+                if (static::isEmail($row->username)) {
+                    // Only lowercased, and only when no other account has that address in another case: a username
+                    // with "-<id>" added would break the member's login just the same
+                    $lower       = strtolower((string) $row->username);
+                    $newUsername = $lower !== $row->username && !static::taken($lower, $row->id) ? $lower : null;
+                } else {
+                    $newUsername = static::usernameError($row->username) === null ? null : static::normalizeUsername($row->username, $row->id);
+                }
+
                 $newName     = static::nameError($row->name) === null ? null
                     : static::normalizeName($row->name, $newUsername !== null ? $newUsername : $row->username);
 
@@ -359,6 +379,21 @@ abstract class KunenaUserNormalizer
         }
 
         return array('changed' => $changed, 'last' => $scan['last']);
+    }
+
+    /**
+     * @param   string  $username  Username
+     *
+     * @return  boolean  The username is an e-mail address (syntax only, as Joomla's own e-mail rule checks)
+     *
+     * @since 5.5.0
+     */
+    public static function isEmail($username)
+    {
+        $username = (string) $username;
+
+        return strlen($username) <= static::MAX_USERNAME && strpos($username, '@') !== false
+            && filter_var($username, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**

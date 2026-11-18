@@ -105,7 +105,7 @@ if ($banInfo && $banInfo->reason_public) {
 				<?php if ($config->user_status) : ?>
 					<?php echo $this->subLayout('User/Item/Status')->set('user', $profile); ?>
 				<?php endif; ?>
-				<?php if (!empty($profile->username) && $profile->username !== $profile->getName()) : ?>
+				<?php if (!empty($profile->username) && !KunenaUserNormalizer::isEmail($profile->username) && $profile->username !== $profile->getName()) : ?>
 					<span>@<?php echo $this->escape($profile->username); ?></span>
 				<?php endif; ?>
 			</div>

@@ -178,7 +178,7 @@ class KunenaProfileKunena extends KunenaProfile
         if (!$user->userid && !$user->name) {
             $name = $visitorname;
         } else {
-            $name = $config->username ? $user->username : $user->name;
+            $name = $config->username ? $user->getPublicUsername() : $user->name;
         }
 
         if ($escape) {
