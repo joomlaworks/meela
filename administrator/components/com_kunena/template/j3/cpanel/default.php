@@ -4,7 +4,7 @@
  * @package         Kunena.Administrator.Template
  * @subpackage      CPanel
  *
- * @copyright       Copyright (C) 2008 - 2026 Kunena Team. All rights reserved.
+ * @copyright       Copyright (C) 2008 - 2022 Kunena Team. All rights reserved.
  * @license         https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link            https://www.kunena.org
  **/
@@ -60,7 +60,7 @@ use Joomla\CMS\Language\Text;
 							<dd><a href="https://www.joomlaworks.net" target="_blank" rel="noopener noreferrer">JoomlaWorks Ltd.</a> &amp; Contributors</dd>
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_COPYRIGHT') ?>:</dt>
-							<dd>&copy; 2008 - 2026 Kunena Team<br/>&copy; 2026 JoomlaWorks Ltd. &amp; Contributors</dd>
+							<dd>&copy; 2008 - 2022 Kunena Team<br/>&copy; 2026 JoomlaWorks Ltd. &amp; Contributors</dd>
 							<hr class="hr-condensed">
 							<dt><?php echo Text::_('COM_KUNENA_CPANEL_LABEL_LABEL_LICENSE') ?>:</dt>
 							<dd>GNU General Public License</dd>

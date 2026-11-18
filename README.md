@@ -191,4 +191,4 @@ See [AGENTS.md](AGENTS.md) for the repository layout, coding rules, how the inst
 
 For development and test sites, **Meela > Configuration > Development** stops all of Meela's e-mails (each one is written to Meela's log instead) and turns on Meela's debug mode.
 
-Copyright (C) 2008 - 2026 Kunena Team, JoomlaWorks Ltd. and contributors.
+Copyright (C) 2008 - 2022 Kunena Team; (C) 2026 JoomlaWorks Ltd. and contributors.

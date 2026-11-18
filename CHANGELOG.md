@@ -15,6 +15,9 @@ how the code base is organised and how to work on it, see [AGENTS.md](AGENTS.md)
   announcements, @mentions, the member search, profile addresses and the sitemaps), an account whose username is an
   e-mail address shows its name instead (`KunenaUser::getPublicUsername()`); the member search no longer matches such
   usernames.
+- **The Kunena Team's copyright reads 2008 - 2022** again in every file, the manifests, the installer's version line and
+  the dashboard: 5.3.0 had extended it to 2026, but the Kunena Team's work on the Joomla 3 line ended with 5.2.14 in
+  2022. Meela's own work is (C) 2026 JoomlaWorks Ltd.
 - **Kunena's old language pack is removed on update**: it put its files into the site's and the administrator's
   `language/` folders, which Joomla reads before the component's own, so a site that had installed it kept the old
   translations (and, for English, Kunena 5.2's strings without Meela's new ones). The installer now deletes the pack's

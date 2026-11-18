@@ -504,6 +504,8 @@ tests/e2e/containers.sh down
   records Crypsis for sites upgrading from < 5.3 that never saved their configuration; `tests/e2e/upgrade.sh` checks it).
   One stylesheet and one script; no "Time to create page" in the footer of any template.
 - `LICENSE.txt` (GPL v3) stays at the root.
+- Copyright: the Kunena Team's lines stay "(C) 2008 - 2022 Kunena Team" (their last Joomla 3 release, 5.2.14, was in
+  2022); never extend them. New files carry only "(C) <year> JoomlaWorks Ltd."; manifests list both.
 - The product is called Meela (renamed from Kunena Fork in 5.5.0); the Kunena Team stays credited (copyright lines, the
   dashboard's "Based on Kunena 5.2.14 by the Kunena Team" under the version). New installations call the forum "Forum"
   (`board_title`).

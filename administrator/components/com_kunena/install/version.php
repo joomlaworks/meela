@@ -5,7 +5,7 @@
  *
  * @package        Kunena.Installer
  *
- * @copyright      Copyright (C) 2008 - 2026 Kunena Team. All rights reserved.
+ * @copyright      Copyright (C) 2008 - 2022 Kunena Team. All rights reserved.
  * @license        https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link           https://www.kunena.org
  **/
@@ -133,7 +133,7 @@ class KunenaAdminVersion
      */
     public static function getCopyrightHTML()
     {
-        return ': &copy; 2008 - 2026 ' . Text::_('COM_KUNENA_VERSION_COPYRIGHT') . ': <a href="https://www.kunena.org/team" target="_blank" rel="noopener noreferrer">'
+        return ': &copy; 2008 - 2022 ' . Text::_('COM_KUNENA_VERSION_COPYRIGHT') . ': <a href="https://www.kunena.org/team" target="_blank" rel="noopener noreferrer">'
             . Text::_('COM_KUNENA_VERSION_TEAM') . '</a>, &copy; 2026 <a href="https://www.joomlaworks.net" target="_blank" rel="noopener noreferrer">JoomlaWorks Ltd.</a> &amp; Contributors | '
             . Text::_('COM_KUNENA_VERSION_LICENSE')
             . ': <a href = "https://www.gnu.org/copyleft/gpl.html" target = "_blank">'
